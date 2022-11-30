@@ -1,0 +1,21 @@
+.info {
+  display: flex;
+  align-items: center;
+  opacity: 0.75;
+}
+
+.title {
+  margin-top: 0.25rem;
+
+  @include tablet() {
+    margin-top: 0.3125rem;
+  }
+}
+
+.divider {
+  margin: 0 0.375rem;
+}
+
+.categoryIcon {
+  margin-right: 0.375rem;
+}

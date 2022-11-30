@@ -1,0 +1,51 @@
+.imageContainer {
+  position: relative;
+  aspect-ratio: 164 / 110;
+  cursor: pointer;
+}
+
+.image {
+  border-radius: 10px;
+  object-fit: cover;
+
+  transition: filter 150ms ease-in;
+
+  .imageContainer:focus-within &,
+  .imageContainer:hover & {
+    filter: brightness(40%);
+  }
+}
+
+.showInfo {
+  margin-top: 0.5rem;
+}
+
+.playBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 150ms ease-in;
+
+  .imageContainer:focus-within &,
+  .imageContainer:hover & {
+    opacity: 1;
+  }
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+}
+
+.bookmarkBtn {
+  --spacing-from-edge: 0.5rem;
+  position: absolute;
+  top: var(--spacing-from-edge);
+  right: var(--spacing-from-edge);
+
+  @include tablet() {
+    --spacing-from-edge: 1rem;
+  }
+}

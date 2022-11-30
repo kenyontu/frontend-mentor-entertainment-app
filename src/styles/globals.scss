@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500&display=swap');
+
+:root {
+  /* Colors */
+  --clr-white: #f2f2f2;
+  --clr-red-400: #fc4747;
+  --clr-dark-blue-400: #161d2f;
+  --clr-dark-blue-600: #10141e;
+  --clr-gray-400: #5a698f;
+
+  --padding-page: 1rem;
+
+  --z-header: 200;
+
+  --fs-h1: 2rem;
+  --fs-h2: 1.5rem;
+  --fs-h3: 1.5rem;
+  --fs-h4: 1.125rem;
+  --fs-body1: 0.9375rem;
+  --fs-body2: 0.8125rem;
+
+  --outline: 2px solid var(--clr-white);
+  --outline-offset: 3px;
+
+  @include tablet() {
+    --padding-page: 1.5rem;
+  }
+
+  @include desktop() {
+    --padding-page: 2rem;
+    --header-width: calc(6rem + var(--padding-page));
+  }
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input {
+  color: inherit;
+  font-family: inherit;
+}
+
+html {
+  background-color: var(--clr-dark-blue-600);
+  color: var(--clr-white);
+}
+
+body {
+  min-height: 100vh;
+  min-width: 375px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

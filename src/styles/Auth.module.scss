@@ -1,0 +1,86 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 375px;
+}
+
+.card {
+  position: relative;
+  width: 20.437rem;
+  margin-top: 3.625rem;
+
+  @include tablet() {
+    width: 25rem;
+    margin-top: 4.5rem;
+  }
+
+  @include desktop() {
+    margin-top: 5.125rem;
+  }
+}
+
+.logoWrapper {
+  position: relative;
+  width: 2rem;
+  height: 1.5625rem;
+  margin-top: 3rem;
+
+  @include tablet() {
+    margin-top: 5.5rem;
+  }
+
+  @include desktop() {
+    margin-top: 4.875rem;
+  }
+}
+
+.logo {
+  object-fit: cover;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.form {
+  --gap: 0.5rem;
+  margin-top: 1.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.errorMessage {
+  color: var(--clr-red-400);
+  text-align: center;
+}
+
+.submitBtn {
+  position: relative;
+  margin-top: calc(2.5rem - var(--gap));
+
+  @include tablet() {
+    margin-top: calc(1.5rem - var(--gap));
+  }
+}
+
+.bottomMsg {
+  margin-top: calc(2.5rem - var(--gap));
+  text-align: center;
+  font-size: 0.9375rem;
+
+  & > a {
+    color: var(--clr-red-400);
+  }
+
+  & > a:hover {
+    color: var(--clr-white); 
+  }
+
+  @include tablet() {
+    margin-top: calc(1.5rem - var(--gap));
+  }
+}
+

@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Show {
+  id           Int        @id @default(autoincrement())
+  title        String     @unique
+  year         Int
+  category     String
+  rating       String
+  isTrending   Boolean    @map("is_trending")
+  thumbnail    Thumbnail?
+  bookmarkedBy ShowsOnUsers[]
+
+
+  @@map("show")
+}
+
+model Thumbnail {
+  id       Int   @id @default(autoincrement())
+  show     Show? @relation(fields: [showId], references: [id])
+  showId   Int   @unique @map("show_id")
+  trending TrendingThumbnail?
+  regular  RegularThumbnail?
+
+  @@map("thumbnail")
+}
+
+model TrendingThumbnail {
+  id          Int        @id @default(autoincrement())
+  small       String
+  large       String
+  thumbnailId Int        @unique @map("thumbnail_id")
+  thumbnail   Thumbnail? @relation(fields: [thumbnailId], references: [id])
+
+  @@map("trending_thumbnail")
+}
+
+model RegularThumbnail {
+  id          Int        @id @default(autoincrement())
+  small       String
+  medium      String
+  large       String
+  thumbnailId Int        @unique @map("thumbnail_id")
+  thumbnail   Thumbnail? @relation(fields: [thumbnailId], references: [id])
+
+  @@map("regular_thumbnail")
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  name      String
+  password  String
+  bookmarks ShowsOnUsers[]
+}
+
+model ShowsOnUsers {
+  user    User     @relation(fields: [userId], references:[id], onDelete: Cascade)
+  userId  Int
+  show    Show     @relation(fields: [showId], references: [id], onDelete: Cascade)
+  showId  Int
+  addedAt DateTime @default(now())
+
+  @@id([userId, showId])
+}

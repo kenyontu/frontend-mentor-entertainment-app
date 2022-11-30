@@ -1,0 +1,35 @@
+.button {
+  --clr-icon: var(--clr-white);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 150ms ease-in;
+
+  &:hover {
+    --clr-icon: var(--clr-dark-blue-600);
+    background-color: var(--clr-white);
+  }
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+}
+
+.icon {
+  width: 0.6875rem;
+  height: 0.875rem;
+  stroke: var(--clr-icon);
+  stroke-width: 1.5;
+  fill: transparent;
+  transition: stroke 150ms ease-in, fill 150ms ease-in;
+
+  &.bookmarked {
+    fill: var(--clr-icon);
+  }
+}

@@ -1,0 +1,224 @@
+.container {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+
+  @include tablet() {
+    padding: var(--padding-page);
+    padding-bottom: 0;
+  }
+
+  @include desktop() {
+    position: fixed;
+    height: 100vh;
+    max-height: 50rem;
+    width: var(--header-width);
+    padding: var(--padding-page);
+    padding-right: 0;
+  }
+}
+
+.content {
+  height: 3.5rem;
+  top: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background-color: var(--clr-dark-blue-400);
+
+  @include tablet() {
+    border-radius: 10px;
+    height: 4.5rem;
+    padding: 0 1.5rem;
+  }
+
+  @include desktop() {
+    height: 100%;
+    min-height: 32rem;
+    flex-direction: column;
+    padding: 2.25rem 0;
+    justify-content: unset;
+  }
+}
+
+.logoLink {
+  display: flex;
+  border-radius: 3px;
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+}
+
+.logo {
+  height: 1.25rem;
+
+  @include tablet() {
+    width: 2rem;
+    height: auto;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  @include tablet() {
+    gap: 2rem;
+  }
+
+  @include desktop() {
+    margin-top: 4.6875rem;
+    position: unset;
+    flex-direction: column;
+    gap: 2.5rem;
+    left: unset;
+    transform: unset;
+  }
+}
+
+.signInBtn {
+  font-size: 1rem;
+  border-radius: 3px;
+
+  &:hover {
+    color: var(--clr-red-400);
+  }
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+
+  @include desktop() {
+    margin-top: auto;
+  }
+}
+
+.userIconWrapper {
+  position: relative;
+
+  @include desktop() {
+    margin-top: auto;
+  }
+}
+
+.userBtn {
+  width: 1.75rem;
+  height: 1.75rem;
+  background-color: var(--clr-red-400);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+
+  @include tablet() {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  @include desktop() {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.userIconText {
+  margin-top: -0.1em;
+  font-size: 1rem;
+  font-weight: 500;
+
+  @include tablet() {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+
+  @include desktop() {
+    font-size: 1.25rem;
+  }
+}
+
+.userMenuBackdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  &.open {
+    display: unset;
+  }
+}
+
+.userMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  display: none;
+  width: 12rem;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px 6px rgba(0, 0, 0, 0.3);
+  background-color: var(--clr-dark-blue-400);
+
+  &.open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @include desktop {
+    top: unset;
+    right: unset;
+    left: 0;
+    bottom: calc(100% + 0.5rem);
+  }
+}
+
+.userMenuContent {
+  padding: 0.75rem;
+}
+
+.userMenuUserName {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.userMenuEmail {
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.signOutBtnContainer {
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem 0;
+}
+
+.signOutBtn {
+  cursor: pointer;
+  border-radius: 3px;
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+
+  &:hover {
+    color: var(--clr-red-400);
+  }
+}

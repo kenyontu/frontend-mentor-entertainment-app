@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.input {
+  flex: 1;
+
+  @include desktop() {
+    max-width: 32rem;
+  }
+}
+
+.clearBtn {
+  background-color: var(--clr-dark-blue-400);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 150ms ease-in, color 150ms ease-in;
+  font-size: 0.9rem;
+
+  &:focus {
+    background-color: var(--clr-white);
+    color: var(--clr-dark-blue-400);
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+  }
+}

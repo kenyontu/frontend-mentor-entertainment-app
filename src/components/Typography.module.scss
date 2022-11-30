@@ -1,0 +1,57 @@
+.h {
+  &1 {
+    line-height: 1em;
+    font-weight: 300;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+
+    @include tablet() {
+      font-size: var(--fs-h1);
+    }
+  }
+
+  &2 {
+    line-height: 1em;
+    font-weight: 300;
+    font-size: var(--fs-h2);
+
+    @include tablet() {
+      font-size: var(--fs-h1);
+    }
+  }
+
+  &3 {
+    line-height: 1em;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+  }
+
+  &4 {
+    line-height: 1em;
+    font-weight: 500;
+    font-size: 0.875rem;
+
+    @include tablet() {
+      font-size: var(--fs-h4);
+    }
+  }
+}
+
+.body {
+  &1 {
+    line-height: 1em;
+    font-weight: 300;
+    font-size: 0.75rem;
+
+    @include tablet() {
+      font-size: var(--fs-body1);
+    }
+  }
+
+  &2 {
+    line-height: 1em;
+    font-weight: 300;
+    font-size: 0.8125rem;
+    font-size: var(--fs-body2);
+  }
+}

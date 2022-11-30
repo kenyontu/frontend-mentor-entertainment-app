@@ -1,0 +1,27 @@
+.button {
+  --padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 28.5px;
+  padding: var(--padding);
+  background-color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+
+  @include tablet() {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.label {
+  padding: 0 calc(1.1875rem - var(--padding));
+
+  @include tablet() {
+    font-size: 1rem;
+  }
+}

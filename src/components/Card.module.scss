@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: var(--clr-dark-blue-400);
+  padding: 1.5rem;
+
+  @include tablet() {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+}

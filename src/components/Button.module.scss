@@ -1,0 +1,52 @@
+.button {
+  position: relative;
+  padding: 0.875rem 1rem 0.9375rem;
+  background-color: var(--clr-red-400);
+  color: var(--clr-white);
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: background-color 120ms ease-in, color 120ms ease-in,
+    opacity 50ms ease-in;
+  opacity: 1;
+}
+
+.button:focus,
+.button:hover {
+  background-color: var(--clr-white);
+  color: var(--clr-dark-blue-400);
+}
+
+.button:not(:disabled):active {
+  opacity: 0.75;
+}
+
+.button:disabled {
+  background-color: lightslategray;
+  cursor: unset;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

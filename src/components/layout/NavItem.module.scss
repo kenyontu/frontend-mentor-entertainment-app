@@ -1,0 +1,27 @@
+.link {
+  display: flex;
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: var(--outline-offset);
+    border-radius: 3px;
+  }
+}
+
+.icon {
+  fill: #5a698f;
+  height: 1rem;
+
+  &.active {
+    fill: white;
+  }
+
+  .link:hover &:not(.active),
+  .link:focus &:not(.active) {
+    fill: var(--clr-red-400);
+  }
+
+  @include tablet() {
+    height: 1.25rem;
+  }
+}
