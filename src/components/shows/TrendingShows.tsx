@@ -1,11 +1,9 @@
-import { Show } from '@prisma/client'
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 
 import { TrendingShow } from '~/models/show'
 import { LeftIcon } from '../icons/LeftIcon'
 import { RightIcon } from '../icons/RightIcon'
-import { TrendingShowItem } from './item/TrendingShowItem'
 import { ShowSectionHeader } from './ShowSectionHeader'
 import styles from './TrendingShows.module.scss'
 
