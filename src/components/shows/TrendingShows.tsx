@@ -11,7 +11,7 @@ import styles from './TrendingShows.module.scss'
 
 type Props = {
   shows: TrendingShow[]
-  renderItem: (show: TrendingShow) => React.ReactNode
+  renderItem: (show: TrendingShow, index: number) => React.ReactNode
 }
 
 export function TrendingShows({ shows, renderItem }: Props) {
@@ -67,8 +67,8 @@ export function TrendingShows({ shows, renderItem }: Props) {
           >
           </div>
 
-          {shows.map((show) => (
-            renderItem(show)
+          {shows.map((show, index) => (
+            renderItem(show, index)
           ))}
 
           <span

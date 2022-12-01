@@ -88,10 +88,11 @@ const Home: NextPage<PageProps> = (
         {showTrendingShows && (
           <TrendingShows
             shows={trendingShows.data || []}
-            renderItem={(show) => (
+            renderItem={(show, index) => (
               <TrendingShowItem
                 key={show.id}
                 show={show}
+                preloadImage={index === 0}
                 showBookmarkButton={isUserAuthenticated}
                 bookmarked={bookmarks.isShowBookmarked(show.id)}
                 addBookmark={bookmarks.addBookmark}
