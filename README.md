@@ -1,34 +1,88 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend Mentor - Entertainment web app solution
 
-## Getting Started
+This is a solution to the [Entertainment web app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/entertainment-web-app-J-UhgAW1X). Frontend Mentor challenges help you improve your coding skills by building realistic project.
 
-First, run the development server:
+## Table of contents
 
-```bash
-npm run dev
-# or
-yarn dev
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+  - [Setup](#setup)
+- [My process](#my-process)
+  - [Built with](#built-with)
+
+## Overview
+
+### The challenge
+
+Users should be able to:
+
+- [x] View the optimal layout for the app depending on their device's screen size
+- [x] See hover states for all interactive elements on the page
+- [x] Navigate between Home, Movies, TV Series, and Bookmarked Shows pages
+- [x] Add/Remove bookmarks from all movies and TV series
+- [x] Search for relevant shows on all pages
+- [x] **Bonus**: Build this project as a full-stack application
+- [x] **Bonus**: If you're building a full-stack app, we provide authentication screen (sign-up/login) designs if you'd like to create an auth flow
+
+### Screenshots
+
+| Mobile layout                                                                                     | Desktop layout                                                                                      |
+| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| <a href="./screenshots/mobile-signin.png"><img src="./screenshots/mobile-signin-thumb.png" /></a> | <a href="./screenshots/desktop-signin.png"><img src="./screenshots/desktop-signin-thumb.png" /></a> |
+| <a href="./screenshots/mobile-main.png"><img src="./screenshots/mobile-main-thumb.png" /></a>     | <a href="./screenshots/desktop-main.png"><img  src="./screenshots/desktop-main-thumb.png" /></a>    |
+
+### Links
+
+- Solution URL:
+- Live Site URL:
+
+### Setup
+
+Install dependencies:
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env` file in the root of the poject directory and add the following variables:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+DATABASE_URL="<PostgreSQL connection URL>"
+NEXTAUTH_URL="<website url>"
+NEXTAUTH_SECRET="<Secret value for next-auth>"
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Sync the database with the Prisma schema:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+npm run prisma:push
+```
 
-## Learn More
+Seed the database with the seed data:
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm run prisma:seed
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Start the app in dev mode:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+npm run dev
+```
 
-## Deploy on Vercel
+## My process
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Built with
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- CSS custom properties
+- Flexbox
+- CSS Grid
+- Mobile-first workflow
+- [Sass](https://sass-lang.com/) - CSS preprocessor
+- [React](https://reactjs.org/) - JS library
+- [Typescript](https://www.typescriptlang.org/) - JavaScript with syntax for types
+- [Next.js](https://nextjs.org/) - React framework
+- [Prisma](https://www.prisma.io/) - Database ORM
+- [PostgreSQL](https://www.postgresql.org/) - Relational database
