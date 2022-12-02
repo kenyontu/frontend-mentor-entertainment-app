@@ -35,8 +35,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL:
-- Live Site URL:
+- Live Site URL: https://frontend-mentor-entertainment-app-neon.vercel.app
 
 ### Setup
 
@@ -50,7 +49,7 @@ Create a `.env` file in the root of the poject directory and add the following v
 
 ```
 DATABASE_URL="<PostgreSQL connection URL>"
-NEXTAUTH_URL="<website url>"
+NEXTAUTH_URL="<Website url>"
 NEXTAUTH_SECRET="<Secret value for next-auth>"
 ```
 
