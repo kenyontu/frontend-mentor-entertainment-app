@@ -4,5 +4,6 @@
   @include desktop() {
     width: 100%;
     padding-left: calc(var(--header-width) + var(--padding-page));
+    padding-top: calc(var(--padding-page) + 1.5rem);
   }
 }
