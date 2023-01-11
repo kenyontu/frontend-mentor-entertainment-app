@@ -90,6 +90,7 @@ export function TrendingShows({ shows, renderItem }: Props) {
           }}
         >
           <LeftIcon className={styles.scrollIcon} />
+          <span className='sr-only'>Scroll left</span>
         </button>
         <button
           className={clsx(styles.scrollBtn, styles.right, {
@@ -106,6 +107,7 @@ export function TrendingShows({ shows, renderItem }: Props) {
           }}
         >
           <RightIcon className={styles.scrollIcon} />
+          <span className='sr-only'>Scroll right</span>
         </button>
       </div>
     </section>
