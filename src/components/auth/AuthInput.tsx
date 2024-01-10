@@ -14,7 +14,7 @@ export const AuthInput = forwardRef<HTMLInputElement, Props>(
         error={error}
       />
     )
-  },
+  }
 )
 
 AuthInput.displayName = 'AuthInput'

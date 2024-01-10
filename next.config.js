@@ -15,6 +15,15 @@ const nextConfig = {
     includePaths: [path.join(__dirname, 'src/styles')],
     prependData: '@import "mixins.scss";',
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/shows',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
