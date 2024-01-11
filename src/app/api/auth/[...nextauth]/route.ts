@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
-import NextAuth from 'next-auth'
+import NextAuth, { AuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { getUserByEmail } from '~/actions/users'
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     Credentials({
       name: 'Credentials',
@@ -43,12 +43,26 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, account, user }) {
+      if (account) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      session.user.id = token.id
+      return session
+    },
+  },
   session: {
     strategy: 'jwt',
   },
   pages: {
     signIn: '/auth/signin',
   },
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
