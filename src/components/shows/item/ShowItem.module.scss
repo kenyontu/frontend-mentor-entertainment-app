@@ -1,13 +1,13 @@
 .imageContainer {
   position: relative;
-  aspect-ratio: 164 / 110;
+  aspect-ratio: 140 / 87;
   cursor: pointer;
 }
 
 .image {
-  border-radius: 10px;
   object-fit: cover;
-
+  border-radius: 10px;
+  width: 100%;
   transition: filter 150ms ease-in;
 
   .imageContainer:focus-within &,

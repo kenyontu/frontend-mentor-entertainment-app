@@ -1,18 +1,24 @@
+'use client'
+
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
+import { useSession } from 'next-auth/react'
 
-import { TrendingShow } from '~/models/show'
+import styles from './TrendingShows.module.scss'
 import { LeftIcon } from '../icons/LeftIcon'
 import { RightIcon } from '../icons/RightIcon'
 import { ShowSectionHeader } from './ShowSectionHeader'
-import styles from './TrendingShows.module.scss'
+import { Show } from '~/actions/shows'
+import { TrendingShowItem } from './item/TrendingShowItem'
+import { bookmarkShow, unbookmarkShow } from '~/actions/bookmarks'
 
 type Props = {
-  shows: TrendingShow[]
-  renderItem: (show: TrendingShow, index: number) => React.ReactNode
+  shows: Show[]
 }
 
-export function TrendingShows({ shows, renderItem }: Props) {
+export function TrendingShows({ shows }: Props) {
+  const session = useSession()
+  let userId = session.data?.user.id
   const listRef = useRef<HTMLDivElement>(null)
 
   // Refs of elements that sit at the start and end of the list. They
@@ -28,20 +34,23 @@ export function TrendingShows({ shows, renderItem }: Props) {
     const leftDummy = leftDummyRef.current
     const rightDummy = rightDummyRef.current
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(({ target, isIntersecting }) => {
-        const canScroll = !isIntersecting
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          const canScroll = !isIntersecting
 
-        if (target === leftDummy && canScrollLeft !== canScroll) {
-          setCanScrollLeft(canScroll)
-          return
-        }
+          if (target === leftDummy && canScrollLeft !== canScroll) {
+            setCanScrollLeft(canScroll)
+            return
+          }
 
-        if (target === rightDummy && canScrollRight !== canScroll) {
-          setCanScrollRight(canScroll)
-        }
-      })
-    }, { root: listRef.current, threshold: 1 })
+          if (target === rightDummy && canScrollRight !== canScroll) {
+            setCanScrollRight(canScroll)
+          }
+        })
+      },
+      { root: listRef.current, threshold: 1 }
+    )
 
     if (leftDummy) observer.observe(leftDummy)
     if (rightDummy) observer.observe(rightDummy)
@@ -61,18 +70,33 @@ export function TrendingShows({ shows, renderItem }: Props) {
           <div
             ref={leftDummyRef}
             className={`${styles.dummy} ${styles.left}`}
-            key='leftDummy'
-          >
-          </div>
+            key="leftDummy"
+          ></div>
 
           {shows.map((show, index) => (
-            renderItem(show, index)
+            <TrendingShowItem
+              key={show.id}
+              show={show}
+              preloadImage={index === 0}
+              showBookmarkButton={Boolean(userId)}
+              bookmarked={false}
+              addBookmark={() => {
+                if (userId) {
+                  bookmarkShow(parseInt(userId), show.id)
+                }
+              }}
+              deleteBookmark={() => {
+                if (userId) {
+                  unbookmarkShow(parseInt(userId), show.id)
+                }
+              }}
+            />
           ))}
 
           <span
             ref={rightDummyRef}
             className={`${styles.dummy} ${styles.right}`}
-            key='rightDummy'
+            key="rightDummy"
           />
         </div>
         <button
@@ -90,7 +114,7 @@ export function TrendingShows({ shows, renderItem }: Props) {
           }}
         >
           <LeftIcon className={styles.scrollIcon} />
-          <span className='sr-only'>Scroll left</span>
+          <span className="sr-only">Scroll left</span>
         </button>
         <button
           className={clsx(styles.scrollBtn, styles.right, {
@@ -107,7 +131,7 @@ export function TrendingShows({ shows, renderItem }: Props) {
           }}
         >
           <RightIcon className={styles.scrollIcon} />
-          <span className='sr-only'>Scroll right</span>
+          <span className="sr-only">Scroll right</span>
         </button>
       </div>
     </section>

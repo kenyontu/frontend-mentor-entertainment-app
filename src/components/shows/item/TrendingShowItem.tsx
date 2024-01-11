@@ -1,40 +1,37 @@
-import { Show } from '@prisma/client'
 import Image from 'next/image'
 
-import { TrendingShow } from '~/models/show'
 import { BookmarkButton } from '../BookmarkButton'
 import { PlayButton } from '../PlayButton'
 import { ShowInfo } from './ShowInfo'
 import styles from './TrendingShowItem.module.scss'
+import { Show } from '~/actions/shows'
 
 type Props = {
-  show: TrendingShow
+  show: Show
   preloadImage?: boolean
   showBookmarkButton?: boolean
   bookmarked?: boolean
-  addBookmark: (showId: Show['id']) => void
-  deleteBookmark: (showId: Show['id']) => void
+  addBookmark: () => void
+  deleteBookmark: () => void
 }
 
-export function TrendingShowItem(
-  {
-    show,
-    preloadImage,
-    bookmarked,
-    addBookmark,
-    deleteBookmark,
-    showBookmarkButton,
-  }: Props,
-) {
+export function TrendingShowItem({
+  show,
+  preloadImage,
+  bookmarked,
+  addBookmark,
+  deleteBookmark,
+  showBookmarkButton,
+}: Props) {
   return (
     <article className={styles.container}>
       <Image
         className={styles.image}
-        src={show.thumbnail?.trending?.large ?? ''}
-        alt=''
+        src={getThumbnailUrl(show)}
+        alt=""
         fill
-        sizes='(min-width:768px) 70vw,
-        70vw'
+        sizes="(min-width:768px) 70vw,
+        70vw"
         priority={preloadImage}
       />
 
@@ -44,17 +41,14 @@ export function TrendingShowItem(
         <BookmarkButton
           bookmarked={bookmarked}
           className={styles.bookmarkBtn}
-          onClick={() => {
-            if (!bookmarked) {
-              addBookmark(show.id)
-            } else {
-              deleteBookmark(show.id)
-            }
-          }}
         />
       )}
 
       <ShowInfo show={show} className={styles.info} />
     </article>
   )
+}
+
+function getThumbnailUrl(show: Show) {
+  return `/assets/thumbnails/${show.id}/trending/large.jpg`
 }

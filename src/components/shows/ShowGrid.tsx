@@ -1,11 +1,11 @@
-import { ShowWithThumbnail } from '~/models/show'
 import styles from './ShowGrid.module.scss'
 import { ShowSectionHeader } from './ShowSectionHeader'
+import { Show } from '~/actions/shows'
 
 type Props = {
-  shows: ShowWithThumbnail[]
+  shows: Show[]
   title: string
-  renderItem: (show: ShowWithThumbnail) => React.ReactNode
+  renderItem: (show: Show) => React.ReactNode
 }
 
 export function ShowGrid({ title, shows, renderItem }: Props) {
@@ -13,11 +13,7 @@ export function ShowGrid({ title, shows, renderItem }: Props) {
     <section className={styles.container}>
       <ShowSectionHeader>{title}</ShowSectionHeader>
 
-      <div className={styles.grid}>
-        {shows.map((show) => (
-          renderItem(show)
-        ))}
-      </div>
+      <div className={styles.grid}>{shows.map((show) => renderItem(show))}</div>
     </section>
   )
 }
