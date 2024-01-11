@@ -20,7 +20,6 @@ export function Header({ className }: Props) {
 
   const pathName = usePathname()
   const session = useSession()
-  console.log({ session })
 
   return (
     <header className={clsx(styles.container, className)}>
