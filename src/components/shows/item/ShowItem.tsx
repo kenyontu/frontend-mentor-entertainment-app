@@ -1,14 +1,13 @@
 import Image from 'next/image'
 
 import styles from './ShowItem.module.scss'
-import { ShowWithThumbnail } from '~/models/show'
 import { BookmarkButton } from '../BookmarkButton'
 import { PlayButton } from '../PlayButton'
 import { ShowInfo } from './ShowInfo'
 import { Show } from '~/actions/shows'
 
 type Props = {
-  show: ShowWithThumbnail
+  show: Show
 }
 
 export function ShowItem({ show }: Props) {
@@ -27,7 +26,7 @@ export function ShowItem({ show }: Props) {
         />
 
         <PlayButton className={styles.playBtn} />
-        <BookmarkButton className={styles.bookmarkBtn} bookmarked={false} />
+        <BookmarkButton className={styles.bookmarkBtn} showId={show.id} />
       </div>
       <ShowInfo show={show} className={styles.showInfo} />
     </article>

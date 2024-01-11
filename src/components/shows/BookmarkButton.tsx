@@ -2,14 +2,24 @@
 
 import clsx from 'clsx'
 import styles from './BookmarkButton.module.scss'
+import { Show } from '~/actions/shows'
+import { useShowBookmark } from '~/contexts/show_bookmarks_context'
+import { useSession } from 'next-auth/react'
 
-type Props = { bookmarked?: boolean; className?: string }
+type Props = { showId: Show['id']; className?: string }
 
-export function BookmarkButton({ bookmarked, className }: Props) {
+export function BookmarkButton({ showId, className }: Props) {
+  const session = useSession()
+  const { bookmarked, toggleBookmark } = useShowBookmark(showId)
+
+  if (session.status !== 'authenticated') {
+    return null
+  }
+
   return (
     <button
       className={clsx(styles.button, className)}
-      onClick={() => {}}
+      onClick={() => toggleBookmark()}
       role="switch"
       aria-checked={bookmarked}
     >

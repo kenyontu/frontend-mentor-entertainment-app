@@ -9,20 +9,9 @@ import { Show } from '~/actions/shows'
 type Props = {
   show: Show
   preloadImage?: boolean
-  showBookmarkButton?: boolean
-  bookmarked?: boolean
-  addBookmark: () => void
-  deleteBookmark: () => void
 }
 
-export function TrendingShowItem({
-  show,
-  preloadImage,
-  bookmarked,
-  addBookmark,
-  deleteBookmark,
-  showBookmarkButton,
-}: Props) {
+export function TrendingShowItem({ show, preloadImage }: Props) {
   return (
     <article className={styles.container}>
       <Image
@@ -36,14 +25,7 @@ export function TrendingShowItem({
       />
 
       <PlayButton className={styles.playBtn} />
-
-      {showBookmarkButton && (
-        <BookmarkButton
-          bookmarked={bookmarked}
-          className={styles.bookmarkBtn}
-        />
-      )}
-
+      <BookmarkButton className={styles.bookmarkBtn} showId={show.id} />
       <ShowInfo show={show} className={styles.info} />
     </article>
   )
