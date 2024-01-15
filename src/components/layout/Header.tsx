@@ -3,13 +3,12 @@
 import clsx from 'clsx'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 import { Typography } from '../Typography'
 import styles from './Header.module.scss'
 import { NavItem } from './NavItem'
+import { Link } from '~/navigation'
 
 type Props = {
   className?: string
@@ -17,8 +16,6 @@ type Props = {
 
 export function Header({ className }: Props) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-
-  const pathName = usePathname()
   const session = useSession()
 
   return (
@@ -39,26 +36,15 @@ export function Header({ className }: Props) {
         <nav>
           <ul className={styles.menu}>
             <li>
-              <NavItem
-                icon="home"
-                active={pathName === '/shows'}
-                href="/shows"
-                title="Shows"
-              />
+              <NavItem icon="home" href="/shows" title="Shows" />
             </li>
             <li>
-              <NavItem
-                icon="movies"
-                active={pathName === '/shows/movies'}
-                href="/shows/movies"
-                title="Movies"
-              />
+              <NavItem icon="movies" href="/shows/movies" title="Movies" />
             </li>
             <li>
               <NavItem
                 icon="tvseries"
-                active={pathName === '/shows/tv-series'}
-                href="/shows/tv-series"
+                href="/shows/tvseries"
                 title="TV Series"
               />
             </li>
@@ -66,7 +52,6 @@ export function Header({ className }: Props) {
               <li>
                 <NavItem
                   icon="bookmarks"
-                  active={pathName === '/shows/bookmarks'}
                   href="/shows/bookmarks"
                   title="Bookmarks"
                 />

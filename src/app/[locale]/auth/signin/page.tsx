@@ -3,17 +3,15 @@
 import { signIn, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { signInWithCredentials } from '~/actions/auth'
 import { AuthInput } from '~/components/auth/AuthInput'
 import { Button } from '~/components/Button'
 
+import styles from '~/styles/Auth.module.scss'
 import { Card } from '~/components/Card'
 import { Typography } from '~/components/Typography'
-import styles from '~/styles/Auth.module.scss'
+import { useRouter, Link } from '~/navigation'
 
 type Input = {
   email: string

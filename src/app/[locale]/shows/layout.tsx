@@ -1,12 +1,17 @@
+import { unstable_setRequestLocale } from 'next-intl/server'
 import Head from 'next/head'
 
 import { Header } from '~/components/layout/Header'
+import { LocaleParam } from '~/navigation'
 
 type Props = {
   children: React.ReactNode
+  params: LocaleParam
 }
 
-export default function ShowsLayout({ children }: Props) {
+export default function ShowsLayout({ children, params: { locale } }: Props) {
+  unstable_setRequestLocale(locale)
+
   return (
     <>
       <Head>

@@ -1,4 +1,5 @@
 const path = require('path')
+const withNextIntl = require('next-intl/plugin')()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,23 +8,10 @@ const nextConfig = {
   images: {
     deviceSizes: [375, 640, 768, 828, 1024, 1440, 1920],
   },
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
-  },
   sassOptions: {
     includePaths: [path.join(__dirname, 'src/styles')],
     prependData: '@import "mixins.scss";',
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/shows',
-        permanent: true,
-      },
-    ]
-  },
 }
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig)

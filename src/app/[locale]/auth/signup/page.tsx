@@ -4,19 +4,18 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import styles from '~/styles/Auth.module.scss'
 import { AuthInput } from '~/components/auth/AuthInput'
 import { Button } from '~/components/Button'
 import { Card } from '~/components/Card'
 import { Typography } from '~/components/Typography'
 import { createUser } from '~/actions/users'
 import { userSchema } from '~/lib/schemas/user'
-import styles from '~/styles/Auth.module.scss'
+import { Link, useRouter } from '~/navigation'
 
 const formSchema = userSchema
   .merge(z.object({ confirmPassword: z.string() }))
