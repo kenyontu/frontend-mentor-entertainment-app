@@ -2,7 +2,6 @@
 
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
 
 import styles from './TrendingShows.module.scss'
 import { LeftIcon } from '../icons/LeftIcon'
@@ -13,10 +12,16 @@ import { Show } from '~/lib/db'
 
 type Props = {
   shows: Show[]
+  // When having translated text in client components, the recommended
+  // approach is to pass them as props from a server component
+  messages: {
+    title: string
+    srScrollLeft: string
+    srScrollRight: string
+  }
 }
 
-export function TrendingShows({ shows }: Props) {
-  const t = useTranslations('Shows')
+export function TrendingShows({ shows, messages }: Props) {
   const listRef = useRef<HTMLDivElement>(null)
 
   // Refs of elements that sit at the start and end of the list. They
@@ -61,7 +66,7 @@ export function TrendingShows({ shows }: Props) {
 
   return (
     <section className={styles.container}>
-      <ShowSectionHeader>{t('trending')}</ShowSectionHeader>
+      <ShowSectionHeader>{messages.title}</ShowSectionHeader>
 
       <div className={styles.listWrapper}>
         <div className={styles.list} ref={listRef}>
@@ -100,7 +105,7 @@ export function TrendingShows({ shows }: Props) {
           }}
         >
           <LeftIcon className={styles.scrollIcon} />
-          <span className="sr-only">{t('srScrollLeft')}</span>
+          <span className="sr-only">{messages.srScrollLeft}</span>
         </button>
         <button
           className={clsx(styles.scrollBtn, styles.right, {
@@ -117,7 +122,7 @@ export function TrendingShows({ shows }: Props) {
           }}
         >
           <RightIcon className={styles.scrollIcon} />
-          <span className="sr-only">{t('scrollRight')}</span>
+          <span className="sr-only">{messages.srScrollRight}</span>
         </button>
       </div>
     </section>
