@@ -1,11 +1,11 @@
-import { unstable_setRequestLocale } from 'next-intl/server'
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
 
 import { getShows } from '~/actions/shows'
 import { SearchInput } from '~/components/SearchInput'
 import { ShowListPageMain } from '~/components/layout/ShowListPageMain'
 import { ShowGrid } from '~/components/shows/ShowGrid'
 import { ShowItem } from '~/components/shows/item/ShowItem'
-import { getSearchResultText, getSingleQueryValue } from '~/lib/utils'
+import { getSingleQueryValue } from '~/lib/utils'
 import { LocaleParam } from '~/navigation'
 
 type SearchParam = 's'
@@ -20,6 +20,7 @@ export default async function MoviesPage({
   params: { locale },
 }: Props) {
   unstable_setRequestLocale(locale)
+  const t = await getTranslations('Shows')
 
   const searchInputParam: SearchParam = 's'
   const searchTerm = getSingleQueryValue(searchParams[searchInputParam])
@@ -31,15 +32,15 @@ export default async function MoviesPage({
       <SearchInput
         searchParamName={searchInputParam}
         inputProps={{
-          placeholder: 'Search for movies',
+          placeholder: t('searchMoviesPlaceholder'),
         }}
       />
 
       <ShowGrid
         title={
           searchTerm
-            ? getSearchResultText(shows.length ?? 0, searchTerm)
-            : 'Movies'
+            ? t('searchResults', { count: shows.length ?? 0, searchTerm })
+            : t('titleMovies')
         }
         shows={shows || []}
         renderItem={(show) => <ShowItem key={show.id} show={show} />}

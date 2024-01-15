@@ -2,6 +2,7 @@
 
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 import styles from './TrendingShows.module.scss'
 import { LeftIcon } from '../icons/LeftIcon'
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export function TrendingShows({ shows }: Props) {
+  const t = useTranslations('Shows')
   const listRef = useRef<HTMLDivElement>(null)
 
   // Refs of elements that sit at the start and end of the list. They
@@ -59,7 +61,7 @@ export function TrendingShows({ shows }: Props) {
 
   return (
     <section className={styles.container}>
-      <ShowSectionHeader>Trending</ShowSectionHeader>
+      <ShowSectionHeader>{t('trending')}</ShowSectionHeader>
 
       <div className={styles.listWrapper}>
         <div className={styles.list} ref={listRef}>
@@ -98,7 +100,7 @@ export function TrendingShows({ shows }: Props) {
           }}
         >
           <LeftIcon className={styles.scrollIcon} />
-          <span className="sr-only">Scroll left</span>
+          <span className="sr-only">{t('srScrollLeft')}</span>
         </button>
         <button
           className={clsx(styles.scrollBtn, styles.right, {
@@ -115,7 +117,7 @@ export function TrendingShows({ shows }: Props) {
           }}
         >
           <RightIcon className={styles.scrollIcon} />
-          <span className="sr-only">Scroll right</span>
+          <span className="sr-only">{t('scrollRight')}</span>
         </button>
       </div>
     </section>
