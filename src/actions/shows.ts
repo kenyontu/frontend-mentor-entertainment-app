@@ -1,31 +1,38 @@
 'use server'
 
-import { sql } from '~/lib/db'
+import { db, Category } from '~/lib/db'
 
-export type ShowCategory = 'movie' | 'tv-series'
-export type ShowRating = 'pg' | 'e' | '18+'
-
-export type Show = {
-  id: string
-  year: number
-  category_id: ShowCategory
-  rating_id: ShowRating
-  title: string
+type GetShowsOptions = {
+  searchTerm?: string
+  category?: Category['id']
 }
 
-export async function getShows(searchTerm?: string): Promise<Show[]> {
-  const shows: Show[] = searchTerm
-    ? await sql`SELECT id, year, category_id, rating_id, title FROM shows WHERE title LIKE ${
-        '%' + searchTerm + '%'
-      };`
-    : await sql`SELECT id, year, category_id, rating_id, title FROM shows;`
+export async function getShows({ searchTerm, category }: GetShowsOptions) {
+  let query = db.selectFrom('shows')
 
-  return shows
+  if (searchTerm) {
+    query = query.where(db.fn('lower', ['title']), 'like', `%${searchTerm}%`)
+  }
+
+  if (category) {
+    query = query.where('category_id', '=', category)
+  }
+
+  return query
+    .select(['id', 'category_id', 'rating_id', 'title', 'year'])
+    .execute()
 }
 
-export async function getTrendingShows(): Promise<Show[]> {
-  const shows: Show[] =
-    await sql`SELECT s.id, s.title, s.year, s.category_id, s.rating_id FROM shows s INNER JOIN trending_shows t ON s.id=t.show_id;`
-
-  return shows
+export async function getTrendingShows() {
+  return db
+    .selectFrom('shows')
+    .innerJoin('trending_shows', 'trending_shows.show_id', 'shows.id')
+    .select([
+      'shows.id',
+      'shows.category_id',
+      'shows.rating_id',
+      'shows.title',
+      'shows.year',
+    ])
+    .execute()
 }

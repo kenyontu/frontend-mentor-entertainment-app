@@ -1,37 +1,34 @@
 'use server'
 
-import { z } from 'zod'
 import bcrypt from 'bcrypt'
 
-import { sql } from '~/lib/db'
-import { userSchema } from '~/lib/schemas/user'
+import { db, User, NewUser } from '~/lib/db'
 
-export type NewUser = z.infer<typeof userSchema>
-export type UserFull = { id: number } & NewUser
-export type User = Omit<UserFull, 'password'>
-
-export async function createUser(newUser: NewUser): Promise<User> {
+export async function createUser(newUser: NewUser): Promise<User['id']> {
   const { name, email, password } = newUser
   const encryptedPassword = await hashPassword(password)
 
-  const results = await sql`INSERT INTO users (name, email, password)
-      VALUES (${name}, ${email}, ${encryptedPassword})
-      RETURNING id, name, email;`
+  const res = await db
+    .insertInto('users')
+    .values({
+      name,
+      email,
+      password: encryptedPassword,
+    })
+    .returning(['id'])
+    .executeTakeFirstOrThrow()
 
-  return results[0] as User
+  return res.id
 }
 
 export async function getUserByEmail(
   email: User['email']
-): Promise<UserFull | null> {
-  const results =
-    await sql`SELECT id, name, email, password FROM users WHERE email=${email}`
-
-  if (results.length == 0) {
-    return null
-  }
-
-  return results[0] as UserFull
+): Promise<User | undefined> {
+  return db
+    .selectFrom('users')
+    .select(['id', 'name', 'email', 'password'])
+    .where('email', '=', email)
+    .executeTakeFirst()
 }
 
 function hashPassword(password: string): Promise<string> {

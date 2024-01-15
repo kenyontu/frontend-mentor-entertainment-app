@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { createContext, useContext } from 'react'
 import useSWR from 'swr'
 import { bookmarkShow, getBookmarks, unbookmarkShow } from '~/actions/bookmarks'
-import { Show } from '~/actions/shows'
+import { Show } from '~/lib/db'
 
 type ContextState = {
   isShowBookmarked: (showId: Show['id']) => boolean

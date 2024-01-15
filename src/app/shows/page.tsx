@@ -14,10 +14,10 @@ export default async function ShowsPage({
   searchParams: Record<SearchParam, string | string[] | undefined>
 }) {
   const searchInputParam: SearchParam = 's'
-  const searchValue = getSingleQueryValue(searchParams[searchInputParam])
+  const searchTerm = getSingleQueryValue(searchParams[searchInputParam])
 
   const trendingShows = await getTrendingShows()
-  const shows = await getShows(searchValue)
+  const shows = await getShows({ searchTerm })
 
   return (
     <ShowListPageMain>
@@ -28,12 +28,12 @@ export default async function ShowsPage({
         }}
       />
 
-      {!searchValue && <TrendingShows shows={trendingShows} />}
+      {!searchTerm && <TrendingShows shows={trendingShows} />}
 
       <ShowGrid
         title={
-          searchValue
-            ? getSearchResultText(shows.length ?? 0, searchValue)
+          searchTerm
+            ? getSearchResultText(shows.length ?? 0, searchTerm)
             : 'Shows'
         }
         shows={shows || []}

@@ -1,28 +1,35 @@
 'use server'
 
-import { sql } from '~/lib/db'
-import { User } from './users'
-import { Show } from './shows'
+import { db, User, Bookmark } from '~/lib/db'
 
-type Bookmark = Show['id']
+export async function getBookmarks(userId: User['id']) {
+  // TODO: Figure out how to use Kysely to return a single value containing an array of bookmarked show_ids
+  const res = await db
+    .selectFrom('bookmarks')
+    .where('user_id', '=', userId)
+    .select('show_id')
+    .execute()
 
-export async function getBookmarks(userId: User['id']): Promise<Bookmark[]> {
-  const result =
-    await sql`SELECT show_id FROM bookmarks WHERE user_id=${userId}`
-
-  return result.map((row) => row.show_id)
+  return res.map((row) => row.show_id)
 }
 
 export async function bookmarkShow(
-  userId: User['id'],
-  showId: Show['id']
-): Promise<void> {
-  await sql`INSERT INTO bookmarks (user_id, show_id) VALUES (${userId}, ${showId});`
+  userId: Bookmark['user_id'],
+  showId: Bookmark['show_id']
+) {
+  await db
+    .insertInto('bookmarks')
+    .values({ user_id: userId, show_id: showId })
+    .execute()
 }
 
 export async function unbookmarkShow(
-  userId: User['id'],
-  showId: Show['id']
-): Promise<void> {
-  await sql`DELETE FROM bookmarks WHERE user_id=${userId} AND show_id=${showId}`
+  userId: Bookmark['user_id'],
+  showId: Bookmark['show_id']
+) {
+  await db
+    .deleteFrom('bookmarks')
+    .where('user_id', '=', userId)
+    .where('show_id', '=', showId)
+    .execute()
 }
