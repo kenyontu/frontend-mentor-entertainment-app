@@ -12,16 +12,25 @@ import { Link } from '~/navigation'
 
 type Props = {
   className?: string
+  t: {
+    home: string
+    shows: string
+    movies: string
+    tvSeries: string
+    bookmarks: string
+    signIn: string
+    signOut: string
+  }
 }
 
-export function Header({ className }: Props) {
+export function Header({ className, t }: Props) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const session = useSession()
 
   return (
     <header className={clsx(styles.container, className)}>
       <div className={styles.content}>
-        <Link href="/" title="Home" className={styles.logoLink}>
+        <Link href="/" title={t.home} className={styles.logoLink}>
           <Image
             src="/assets/logo.svg"
             alt="Logo"
@@ -31,21 +40,21 @@ export function Header({ className }: Props) {
             aria-hidden="true"
             priority={true}
           />
-          <span className="sr-only">Home</span>
+          <span className="sr-only">{t.home}</span>
         </Link>
         <nav>
           <ul className={styles.menu}>
             <li>
-              <NavItem icon="home" href="/shows" title="Shows" />
+              <NavItem icon="home" href="/shows" title={t.shows} />
             </li>
             <li>
-              <NavItem icon="movies" href="/shows/movies" title="Movies" />
+              <NavItem icon="movies" href="/shows/movies" title={t.movies} />
             </li>
             <li>
               <NavItem
                 icon="tvseries"
                 href="/shows/tvseries"
-                title="TV Series"
+                title={t.tvSeries}
               />
             </li>
             {session.status === 'authenticated' && (
@@ -53,7 +62,7 @@ export function Header({ className }: Props) {
                 <NavItem
                   icon="bookmarks"
                   href="/shows/bookmarks"
-                  title="Bookmarks"
+                  title={t.bookmarks}
                 />
               </li>
             )}
@@ -107,7 +116,7 @@ export function Header({ className }: Props) {
                   onClick={() => signOut({ callbackUrl: '/' })}
                   className={styles.signOutBtn}
                 >
-                  Sign Out
+                  {t.signOut}
                 </button>
               </div>
             </div>
@@ -115,7 +124,7 @@ export function Header({ className }: Props) {
         ) : (
           <Link href="/auth/signin" className={styles.signInBtn}>
             <Typography variant="body1" as="span">
-              Sign in
+              {t.signIn}
             </Typography>
           </Link>
         )}

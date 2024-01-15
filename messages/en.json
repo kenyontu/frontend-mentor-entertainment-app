@@ -1,14 +1,18 @@
 {
   "Shows": {
+    "home": "Home",
     "trending": "Trending",
     "title": "Shows",
     "titleMovies": "Movies",
     "titleTvSeries": "TV Series",
+    "titleBookmarks": "Bookmarks",
     "searchPlaceholder": "Search for movies or TV series",
     "searchMoviesPlaceholder": "Search for movies",
     "searchTvSeriesPlaceholder": "Search for TV series",
     "searchResults": "{count, plural, =0 {No result} =1 {Found 1 result} other {Found # results}} for \"{searchTerm}\"",
     "srScrollLeft": "Scroll left",
-    "srScrollRight": "Scroll right"
+    "srScrollRight": "Scroll right",
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
   }
 }
