@@ -14,14 +14,14 @@ type Props = {
   shows: Show[]
   // When having translated text in client components, the recommended
   // approach is to pass them as props from a server component
-  messages: {
+  t: {
     title: string
     srScrollLeft: string
     srScrollRight: string
   }
 }
 
-export function TrendingShows({ shows, messages }: Props) {
+export function TrendingShows({ shows, t }: Props) {
   const listRef = useRef<HTMLDivElement>(null)
 
   // Refs of elements that sit at the start and end of the list. They
@@ -66,7 +66,7 @@ export function TrendingShows({ shows, messages }: Props) {
 
   return (
     <section className={styles.container}>
-      <ShowSectionHeader>{messages.title}</ShowSectionHeader>
+      <ShowSectionHeader>{t.title}</ShowSectionHeader>
 
       <div className={styles.listWrapper}>
         <div className={styles.list} ref={listRef}>
@@ -105,7 +105,7 @@ export function TrendingShows({ shows, messages }: Props) {
           }}
         >
           <LeftIcon className={styles.scrollIcon} />
-          <span className="sr-only">{messages.srScrollLeft}</span>
+          <span className="sr-only">{t.srScrollLeft}</span>
         </button>
         <button
           className={clsx(styles.scrollBtn, styles.right, {
@@ -122,7 +122,7 @@ export function TrendingShows({ shows, messages }: Props) {
           }}
         >
           <RightIcon className={styles.scrollIcon} />
-          <span className="sr-only">{messages.srScrollRight}</span>
+          <span className="sr-only">{t.srScrollRight}</span>
         </button>
       </div>
     </section>

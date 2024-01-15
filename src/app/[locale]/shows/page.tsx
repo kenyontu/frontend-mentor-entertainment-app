@@ -40,7 +40,7 @@ export default async function ShowsPage({
       {!searchTerm && (
         <TrendingShows
           shows={trendingShows}
-          messages={{
+          t={{
             title: t('trending'),
             srScrollLeft: t('srScrollLeft'),
             srScrollRight: t('srScrollRight'),
