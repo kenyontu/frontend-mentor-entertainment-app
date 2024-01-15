@@ -14,5 +14,15 @@
     "srScrollRight": "Scroll right",
     "signIn": "Sign In",
     "signOut": "Sign Out"
+  },
+  "SignIn": {
+    "title": "Sign In",
+    "invalidEmailPassword": "Invalid email or password",
+    "requestError": "Error while making the sign in request",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "login": "Login to your account",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign Up"
   }
 }
