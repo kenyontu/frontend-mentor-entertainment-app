@@ -2,23 +2,19 @@
 
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
-import { useSession } from 'next-auth/react'
 
 import styles from './TrendingShows.module.scss'
 import { LeftIcon } from '../icons/LeftIcon'
 import { RightIcon } from '../icons/RightIcon'
 import { ShowSectionHeader } from './ShowSectionHeader'
-import { Show } from '~/actions/shows'
 import { TrendingShowItem } from './item/TrendingShowItem'
-import { bookmarkShow, unbookmarkShow } from '~/actions/bookmarks'
+import { Show } from '~/lib/db'
 
 type Props = {
   shows: Show[]
 }
 
 export function TrendingShows({ shows }: Props) {
-  const session = useSession()
-  let userId = session.data?.user.id
   const listRef = useRef<HTMLDivElement>(null)
 
   // Refs of elements that sit at the start and end of the list. They
@@ -78,18 +74,6 @@ export function TrendingShows({ shows }: Props) {
               key={show.id}
               show={show}
               preloadImage={index === 0}
-              showBookmarkButton={Boolean(userId)}
-              bookmarked={false}
-              addBookmark={() => {
-                if (userId) {
-                  bookmarkShow(parseInt(userId), show.id)
-                }
-              }}
-              deleteBookmark={() => {
-                if (userId) {
-                  unbookmarkShow(parseInt(userId), show.id)
-                }
-              }}
             />
           ))}
 
