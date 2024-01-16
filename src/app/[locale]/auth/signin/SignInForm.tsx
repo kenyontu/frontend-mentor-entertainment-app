@@ -1,6 +1,6 @@
 'use client'
 
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ import { Button } from '~/components/Button'
 import styles from '~/styles/Auth.module.scss'
 import { Card } from '~/components/Card'
 import { Typography } from '~/components/Typography'
-import { useRouter, Link } from '~/navigation'
+import { Link } from '~/navigation'
 
 type Input = {
   email: string
@@ -41,13 +41,6 @@ export function SignInForm({ t }: Props) {
     reset,
     setFocus,
   } = useForm<Input>()
-  const router = useRouter()
-  const session = useSession()
-
-  if (session.status === 'authenticated') {
-    router.replace('/')
-  }
-
   const onSubmit: SubmitHandler<Input> = async ({ email, password }) => {
     setAuthError(null)
     setIsLoading(true)

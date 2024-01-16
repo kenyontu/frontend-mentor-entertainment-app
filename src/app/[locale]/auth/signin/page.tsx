@@ -1,8 +1,17 @@
-import { useTranslations } from 'next-intl'
 import { SignInForm } from './SignInForm'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '~/app/api/auth/[...nextauth]/route'
+import { redirect } from '~/navigation'
+import { RedirectType } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
-export default function SignInPage() {
-  const t = useTranslations('SignIn')
+export default async function SignInPage() {
+  const t = await getTranslations('SignIn')
+  const session = await getServerSession(authOptions)
+
+  if (session) {
+    redirect('/shows', RedirectType.replace)
+  }
 
   return (
     <SignInForm
