@@ -1,5 +1,7 @@
 # Frontend Mentor - Entertainment web app solution
 
+**Notice**: Migration to Next.js 14 in progress, the website is currently broken as I am removing `Prisma` in favor of `Kysely`.
+
 This is a solution to the [Entertainment web app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/entertainment-web-app-J-UhgAW1X). Frontend Mentor challenges help you improve your coding skills by building realistic project.
 
 ## Table of contents
