@@ -55,6 +55,7 @@
 .errorMessage {
   color: var(--clr-red-400);
   text-align: center;
+  margin-top: 1rem;
 }
 
 .submitBtn {
@@ -76,11 +77,10 @@
   }
 
   & > a:hover {
-    color: var(--clr-white); 
+    color: var(--clr-white);
   }
 
   @include tablet() {
     margin-top: calc(1.5rem - var(--gap));
   }
 }
-
