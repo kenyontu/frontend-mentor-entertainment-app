@@ -37,16 +37,7 @@ export default async function ShowsPage({
         }}
       />
 
-      {!searchTerm && (
-        <TrendingShows
-          shows={trendingShows}
-          t={{
-            title: t('trending'),
-            srScrollLeft: t('srScrollLeft'),
-            srScrollRight: t('srScrollRight'),
-          }}
-        />
-      )}
+      {!searchTerm && <TrendingShows shows={trendingShows} />}
 
       <ShowGrid
         title={
