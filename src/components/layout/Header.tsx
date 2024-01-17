@@ -69,7 +69,7 @@ export function Header({ className, t }: Props) {
           </ul>
         </nav>
 
-        {session.status === 'authenticated' ? (
+        {session.status === 'authenticated' && (
           <div className={styles.userIconWrapper}>
             <button
               className={styles.userBtn}
@@ -121,7 +121,8 @@ export function Header({ className, t }: Props) {
               </div>
             </div>
           </div>
-        ) : (
+        )}
+        {session.status === 'unauthenticated' && (
           <Link href="/auth/signin" className={styles.signInBtn}>
             <Typography variant="body1" as="span">
               {t.signIn}
