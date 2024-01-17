@@ -12,6 +12,7 @@ import { Card } from '~/components/Card'
 import { Typography } from '~/components/Typography'
 import { Link } from '~/navigation'
 import { useRouter } from 'next/navigation'
+import { useFormStatus } from 'react-dom'
 
 type Props = {
   t: {
@@ -104,13 +105,7 @@ export function SignInForm({ t }: Props) {
               </Typography>
             )}
 
-            <Button
-              type="submit"
-              className={styles.submitBtn}
-              loading={isLoading}
-            >
-              {t.login}
-            </Button>
+            <SubmitButton>{t.login}</SubmitButton>
 
             <Typography as="p" variant="body1" className={styles.bottomMsg}>
               {t.dontHaveAccount} <Link href="/auth/signup">{t.signUp}</Link>
@@ -119,5 +114,15 @@ export function SignInForm({ t }: Props) {
         </Card>
       </main>
     </div>
+  )
+}
+
+function SubmitButton({ children }: { children: React.ReactNode }) {
+  const { pending } = useFormStatus()
+
+  return (
+    <Button type="submit" className={styles.submitBtn} loading={pending}>
+      {children}
+    </Button>
   )
 }
