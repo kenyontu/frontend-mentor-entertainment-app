@@ -2,9 +2,9 @@
 
 import clsx from 'clsx'
 import styles from './BookmarkButton.module.scss'
-import { Show } from '~/actions/shows'
 import { useShowBookmark } from '~/contexts/show_bookmarks_context'
 import { useSession } from 'next-auth/react'
+import { Show } from '~/lib/db'
 
 type Props = { showId: Show['id']; className?: string }
 

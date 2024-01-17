@@ -1,6 +1,6 @@
+import { Show } from '~/lib/db'
 import styles from './ShowGrid.module.scss'
 import { ShowSectionHeader } from './ShowSectionHeader'
-import { Show } from '~/actions/shows'
 
 type Props = {
   shows: Show[]

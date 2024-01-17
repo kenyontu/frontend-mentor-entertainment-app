@@ -4,7 +4,7 @@ import { BookmarkButton } from '../BookmarkButton'
 import { PlayButton } from '../PlayButton'
 import { ShowInfo } from './ShowInfo'
 import styles from './TrendingShowItem.module.scss'
-import { Show } from '~/actions/shows'
+import { Show } from '~/lib/db'
 
 type Props = {
   show: Show
