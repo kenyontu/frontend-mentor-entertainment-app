@@ -1,8 +1,20 @@
 import Image from 'next/image'
 
-import { Typography } from '~/components/Typography'
 import styles from './ShowInfo.module.scss'
-import { Show } from '~/actions/shows'
+import { Typography } from '~/components/Typography'
+import { Show } from '~/lib/db'
+import { useTranslations } from 'next-intl'
+
+const translationKeyByCategory: Record<Show['category_id'], string> = {
+  movie: 'categoryMovie',
+  'tv-series': 'categoryTvSeries',
+}
+
+const translationKeyByRating: Record<Show['rating_id'], string> = {
+  e: 'ratingE',
+  pg: 'ratingPg',
+  '18+': 'rating18+',
+}
 
 type Props = {
   className?: string
@@ -10,6 +22,11 @@ type Props = {
 }
 
 export function ShowInfo({ show, className }: Props) {
+  const t = useTranslations('Shows')
+
+  const category = t(translationKeyByCategory[show.category_id])
+  const rating = t(translationKeyByRating[show.rating_id])
+
   const divider = <span className={styles.divider}>•</span>
 
   return (
@@ -36,9 +53,9 @@ export function ShowInfo({ show, className }: Props) {
             aria-hidden
           />
         ) : null}
-        {show.category_id}
+        {category}
         {divider}
-        {show.rating_id}
+        {rating}
       </Typography>
       <Typography as="h2" variant="h4" className={styles.title}>
         {show.title}

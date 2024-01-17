@@ -13,7 +13,12 @@
     "srScrollLeft": "Scroll left",
     "srScrollRight": "Scroll right",
     "signIn": "Sign In",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "categoryMovie": "Movie",
+    "categoryTvSeries": "TV Series",
+    "ratingE": "E",
+    "ratingPg": "PG",
+    "rating18+": "18+"
   },
   "SignIn": {
     "title": "Sign In",
