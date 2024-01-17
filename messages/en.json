@@ -1,4 +1,12 @@
 {
+  "Metadata": {
+    "homeTitle": "Frontend Mentor | Entertainment web app",
+    "homeDescription": "Watch Movies and TV series",
+    "moviesTitle": "Movies",
+    "tvSeriesTitle": "TV Series",
+    "signInTitle": "Sign In",
+    "signUpTitle": "Sign Up"
+  },
   "Shows": {
     "home": "Home",
     "trending": "Trending",

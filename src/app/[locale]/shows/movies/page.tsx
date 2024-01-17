@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
 
 import { getShows } from '~/actions/shows'
@@ -47,4 +48,15 @@ export default async function MoviesPage({
       />
     </ShowListPageMain>
   )
+}
+
+export async function generateMetadata({
+  params: { locale },
+}: Props): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return {
+    title: t('moviesTitle'),
+    description: t('homeDescription'),
+  }
 }

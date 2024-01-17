@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server'
 import { getShows, getTrendingShows } from '~/actions/shows'
 import { SearchInput } from '~/components/SearchInput'
@@ -50,4 +51,15 @@ export default async function ShowsPage({
       />
     </ShowListPageMain>
   )
+}
+
+export async function generateMetadata({
+  params: { locale },
+}: Props): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return {
+    title: t('homeTitle'),
+    description: t('homeDescription'),
+  }
 }

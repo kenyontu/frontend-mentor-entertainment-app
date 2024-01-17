@@ -1,9 +1,10 @@
 import { SignInForm } from './SignInForm'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '~/app/api/auth/[...nextauth]/route'
-import { redirect } from '~/navigation'
+import { LocaleParam, redirect } from '~/navigation'
 import { RedirectType } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
+import { Metadata } from 'next'
 
 export default async function SignInPage() {
   const t = await getTranslations('SignIn')
@@ -27,4 +28,18 @@ export default async function SignInPage() {
       }}
     />
   )
+}
+
+type Props = {
+  params: LocaleParam
+}
+
+export async function generateMetadata({
+  params: { locale },
+}: Props): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return {
+    title: t('signInTitle'),
+  }
 }

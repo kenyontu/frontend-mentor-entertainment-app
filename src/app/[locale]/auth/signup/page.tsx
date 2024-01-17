@@ -1,5 +1,8 @@
 import { useTranslations } from 'next-intl'
 import { SignUpForm } from './SignUpForm'
+import { LocaleParam } from '~/navigation'
+import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 export default function SignUpPage() {
   const t = useTranslations('SignUp')
@@ -22,4 +25,18 @@ export default function SignUpPage() {
       }}
     />
   )
+}
+
+type Props = {
+  params: LocaleParam
+}
+
+export async function generateMetadata({
+  params: { locale },
+}: Props): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return {
+    title: t('signUpTitle'),
+  }
 }
