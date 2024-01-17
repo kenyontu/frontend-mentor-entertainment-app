@@ -24,5 +24,21 @@
     "login": "Login to your account",
     "dontHaveAccount": "Don't have an account?",
     "signUp": "Sign Up"
+  },
+  "SignUp": {
+    "title": "Sign Up",
+    "requestError": "There was an error while signing in, please try again later",
+    "emptyFieldError": "Field cannot be empty",
+    "emailInvalidError": "Not a valid e-mail",
+    "emailAlreadyInUseError": "This e-mail is already in use",
+    "passwordMinimumLengthError": "Must have a minimum of {length} characters",
+    "passwordsDontMatchError": "Passwords don't match",
+    "emailAddress": "Email address",
+    "name": "Name",
+    "password": "Password",
+    "repeatPassword": "Repeat password",
+    "createAccount": "Create an account",
+    "alreadyHaveAccount": "Alread have an account?",
+    "signIn": "Sign In"
   }
 }
