@@ -3,7 +3,7 @@
 import { db, User, Bookmark } from '~/lib/db'
 
 export async function getBookmarks(userId: User['id']) {
-  // TODO: Figure out how to use Kysely to return a single value containing an array of bookmarked show_ids
+  // TODO: Figure out how to use Kysely to return a single value containing an array of bookmarked show_ids so we don't have to do the map bellow
   const res = await db
     .selectFrom('bookmarks')
     .where('user_id', '=', userId)
