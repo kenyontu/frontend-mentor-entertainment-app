@@ -2,13 +2,22 @@ import { Session, getServerSession } from 'next-auth'
 import { z } from 'zod'
 import { toSingleErrorByField } from '~/lib/zodUtils'
 import { getTranslationsSafely } from '~/i18n'
-import { ActionError, ValidationError } from './types'
 
 type ServerActOptions = {}
 
 type ActOptions<D> = {
   session: Session | null
-} & ({ data: D; error: null } | { data: null; error: Error })
+} & (
+  | { data: D; error: null }
+  | {
+      data: null
+      error: {
+        status: 'error'
+        message?: string
+        validationErrors?: { [key in keyof D]?: string }
+      }
+    }
+)
 
 /**
  * Converts a [FormData] object into a plan object with the field name as key and
@@ -55,11 +64,7 @@ export function createServerAct<
   options?: ServerActOptions
 ) {
   type Input = z.infer<Awaited<ReturnType<typeof getInputSchema>>>
-  type ActError = {
-    status: 'error'
-    error: ActionError | ValidationError<{ [key in keyof Input]?: string }>
-  }
-
+  type ActError = NonNullable<ActOptions<Input>['error']>
   return (act: (options: ActOptions<Input>) => Promise<R | ActError>) => {
     return async (formData: FormData) => {
       try {
@@ -69,13 +74,15 @@ export function createServerAct<
         const valResult = inputSchema.safeParse(formDataToObj(formData))
 
         let data: Input | null = null
-        let error: Error | null = null
+        let error: ActError | null = null
 
         if (valResult.success) {
           data = valResult.data
         } else {
-          const fieldErrors = toSingleErrorByField(valResult.error)
-          error = new ValidationError('Validation failed', fieldErrors)
+          error = {
+            status: 'error',
+            validationErrors: toSingleErrorByField(valResult.error),
+          }
         }
 
         return act({ session, data, error })
@@ -85,9 +92,7 @@ export function createServerAct<
         let tError = await getTranslationsSafely('Error')
         return {
           status: 'error',
-          error: new ActionError(
-            tError ? tError('unexpectedError') : 'Unexpected error'
-          ),
+          message: tError ? tError('unexpectedError') : 'Unexpected error',
         } as ActError
       }
     }
@@ -97,16 +102,6 @@ export function createServerAct<
 /**
  * Extracts the error type of a server action function created from [createServerAct]
  */
-type ExtractError<
+export type ExtractError<
   F extends Awaited<ReturnType<ReturnType<typeof createServerAct>>>
 > = Extract<Awaited<ReturnType<F>>, { status: 'error' }>
-
-/**
- * Extracts the field Errors
- */
-export type ExtractFieldErrors<
-  F extends Awaited<ReturnType<ReturnType<typeof createServerAct>>>,
-  E extends object = {}
-> = NonNullable<
-  Extract<ExtractError<F>['error'], ValidationError<E>>
->['fieldErrors']
