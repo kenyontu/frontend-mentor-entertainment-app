@@ -15,6 +15,7 @@ export default function SignUpPage() {
       t={{
         title: t('title'),
         requestError: t('requestError'),
+        autoSignInError: t('autoSignInEror'),
         emailAddress: t('emailAddress'),
         name: t('name'),
         password: t('password'),

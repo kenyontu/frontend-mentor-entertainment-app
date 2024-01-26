@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt'
 import NextAuth, { AuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { getUserByEmail } from '~/actions/users'
+import { fetchUserByEmail } from '~/lib/db/data'
+
+export type AuthErrorCode = 'unexpectedError'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -16,29 +18,32 @@ export const authOptions: AuthOptions = {
           return null
         }
 
-        try {
-          const user = await getUserByEmail(credentials.email)
-          if (!user) {
-            return null
-          }
+        const userRes = await fetchUserByEmail(credentials.email)
+        if (userRes?.status === 'error') {
+          // TODO: Report error
+          throw new Error('unexpectedError' as AuthErrorCode)
+        }
 
-          const passwordMatches = await bcrypt.compare(
-            credentials.password,
-            user.password
-          )
-
-          if (!passwordMatches) {
-            return null
-          }
-
-          return {
-            id: user.id.toString(),
-            name: user.name,
-            email: credentials.email,
-          }
-        } catch (error) {
-          console.error(error)
+        if (!userRes?.data) {
+          // User not found
           return null
+        }
+
+        const user = userRes.data
+        const passwordMatches = await bcrypt.compare(
+          credentials.password,
+          user.password
+        )
+
+        if (!passwordMatches) {
+          // Password does not match
+          return null
+        }
+
+        return {
+          id: user.id.toString(),
+          name: user.name,
+          email: credentials.email,
         }
       },
     }),

@@ -4,44 +4,34 @@ import bcrypt from 'bcrypt'
 import { getTranslations } from 'next-intl/server'
 import { z } from 'zod'
 
-import { DatabaseError, db, DbConstraints, DbErrorCodes, User } from '~/lib/db'
-import { toSingleErrorByField } from '~/lib/zodUtils'
+import { DatabaseError, db, DbConstraints, DbErrorCodes } from '~/lib/db'
+import { createServerAct } from './utils'
+import { getTranslationsSafely } from '~/i18n'
 
-export async function createUser(formData: FormData) {
+export const createUser = createServerAct(async () => {
   const t = await getTranslations('SignUp')
+  return z
+    .object({
+      name: z.string({ required_error: t('emptyFieldError') }),
+      email: z
+        .string({ required_error: t('emptyFieldError') })
+        .email(t('emailInvalidError')),
+      password: z
+        .string({ required_error: t('emptyFieldError') })
+        .min(5, t('passwordMinimumLengthError', { length: 5 })),
+      confirmPassword: z.string({ required_error: t('emptyFieldError') }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('passwordsDontMatchError'),
+      path: ['confirmPassword'],
+    })
+})(async ({ data, error }) => {
+  if (error) {
+    return error
+  }
 
   try {
-    const newUserSchema = z
-      .object({
-        name: z.string({ required_error: t('emptyFieldError') }),
-        email: z
-          .string({ required_error: t('emptyFieldError') })
-          .email(t('emailInvalidError')),
-        password: z
-          .string({ required_error: t('emptyFieldError') })
-          .min(5, t('passwordMinimumLengthError', { length: 5 })),
-        confirmPassword: z.string({ required_error: t('emptyFieldError') }),
-      })
-      .refine((data) => data.password === data.confirmPassword, {
-        message: t('passwordsDontMatchError'),
-        path: ['confirmPassword'],
-      })
-
-    const validatedFields = newUserSchema.safeParse({
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      confirmPassword: formData.get('confirmPassword'),
-    })
-
-    if (!validatedFields.success) {
-      return {
-        ok: false,
-        fieldErrors: toSingleErrorByField(validatedFields.error),
-      }
-    }
-
-    const { name, email, password } = validatedFields.data
+    const { name, email, password } = data
     const encryptedPassword = await hashPassword(password)
 
     const res = await db
@@ -54,34 +44,33 @@ export async function createUser(formData: FormData) {
       .returning(['id'])
       .executeTakeFirstOrThrow()
 
-    return { ok: true, userId: res.id }
+    return { status: 'success', userId: res.id }
   } catch (error) {
     if (error instanceof DatabaseError) {
       if (
         error.code === DbErrorCodes.uniqueViolation &&
         error.constraint === DbConstraints.userEmailUnique
       ) {
+        let tSignUp = await getTranslationsSafely('SignUp')
         return {
-          ok: false,
-          fieldErrors: { email: t('emailAlreadyInUseError') },
+          status: 'error',
+          validationErrors: {
+            email: tSignUp
+              ? tSignUp('emailAlreadyInUseError')
+              : 'Email already in use',
+          },
         }
       }
     }
 
-    // TODO: Report unexpected error
-    return { ok: false, formError: t('requestError') }
-  }
-}
+    let tError = await getTranslationsSafely('Error')
 
-export async function getUserByEmail(
-  email: User['email']
-): Promise<User | undefined> {
-  return db
-    .selectFrom('users')
-    .select(['id', 'name', 'email', 'password'])
-    .where('email', '=', email)
-    .executeTakeFirst()
-}
+    return {
+      status: 'error',
+      message: tError ? tError('unexpectedError') : 'Unexpected error',
+    }
+  }
+})
 
 function hashPassword(password: string): Promise<string> {
   return new Promise((resolve, reject) => {

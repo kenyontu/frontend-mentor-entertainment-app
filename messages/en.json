@@ -31,7 +31,7 @@
   "SignIn": {
     "title": "Sign In",
     "invalidEmailPassword": "Invalid email or password",
-    "requestError": "Error while making the sign in request",
+    "requestError": "There was a problem signing you in, please try again later",
     "emailAddress": "Email address",
     "password": "Password",
     "login": "Login to your account",
@@ -40,12 +40,13 @@
   },
   "SignUp": {
     "title": "Sign Up",
-    "requestError": "There was an error while signing in, please try again later",
+    "requestError": "There was a problem signing you up, please try again later",
     "emptyFieldError": "Field cannot be empty",
     "emailInvalidError": "Not a valid e-mail",
     "emailAlreadyInUseError": "This e-mail is already in use",
     "passwordMinimumLengthError": "Must have a minimum of {length} characters",
     "passwordsDontMatchError": "Passwords don't match",
+    "autoSignInEror": "Error while signing in user after signing up",
     "emailAddress": "Email address",
     "name": "Name",
     "password": "Password",

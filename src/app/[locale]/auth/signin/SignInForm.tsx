@@ -28,31 +28,24 @@ type Props = {
 }
 
 export function SignInForm({ t }: Props) {
-  const [isLoading, setIsLoading] = useState(false)
   const [authError, setAuthError] = useState<string | null>(null)
   const router = useRouter()
 
   const formAction = async (formData: FormData) => {
     setAuthError(null)
-    setIsLoading(true)
 
-    try {
-      const res = await signIn('credentials', {
-        email: formData.get('email'),
-        password: formData.get('password'),
-        redirect: false,
-      })
+    const res = await signIn('credentials', {
+      email: formData.get('email'),
+      password: formData.get('password'),
+      redirect: false,
+    })
 
-      if (res?.ok) {
-        router.replace('/')
-      } else {
-        setIsLoading(false)
-        setAuthError(t.invalidEmailPassword)
-      }
-    } catch (error) {
-      // TODO: Report error
-      setIsLoading(false)
+    if (res?.ok) {
+      router.replace('/')
+    } else if (res?.error) {
       setAuthError(t.requestError)
+    } else {
+      setAuthError(t.invalidEmailPassword)
     }
   }
 

@@ -12,12 +12,14 @@ import { Typography } from '~/components/Typography'
 import { createUser } from '~/actions/users'
 import { Link, useRouter } from '~/navigation'
 import { useFormState, useFormStatus } from 'react-dom'
+import { ExtractError } from '~/actions/utils'
 
 type Props = {
   passwordMinLength: number
   t: {
     title: string
     requestError: string
+    autoSignInError: string
     emailAddress: string
     name: string
     password: string
@@ -28,12 +30,11 @@ type Props = {
   }
 }
 
-type FormState =
-  | {
-      fieldErrors?: Awaited<ReturnType<typeof createUser>>['fieldErrors']
-      formError?: string
-    }
-  | undefined
+type CreateUserError = ExtractError<typeof createUser>
+type FormState = {
+  error?: CreateUserError['message']
+  validationErrors?: CreateUserError['validationErrors']
+}
 
 export function SignUpForm({ passwordMinLength, t }: Props) {
   const router = useRouter()
@@ -42,32 +43,34 @@ export function SignUpForm({ passwordMinLength, t }: Props) {
       try {
         const createUserRes = await createUser(formData)
 
-        if (createUserRes.ok === false) {
+        if (createUserRes.status === 'error') {
           return {
-            fieldErrors: createUserRes.fieldErrors,
-            formError: createUserRes.formError,
+            error: createUserRes.message,
+            validationErrors: createUserRes.validationErrors,
           }
         }
 
-        const signInRes = await signIn('credentials', {
+        const res = await signIn('credentials', {
           email: formData.get('email'),
           password: formData.get('password'),
           redirect: false,
         })
 
-        if (signInRes?.ok) {
+        if (res?.ok) {
           router.replace('/')
         } else {
-          throw new Error(
-            signInRes?.error ?? 'Error while signing in user after signing up'
-          )
+          return {
+            error: t.autoSignInError,
+          }
         }
+
+        return prevState
       } catch (error) {
         // TODO: Report error
-        return { formError: t.requestError }
+        return { error: t.requestError }
       }
     },
-    undefined
+    {}
   )
 
   return (
@@ -100,7 +103,7 @@ export function SignUpForm({ passwordMinLength, t }: Props) {
               placeholder={t.emailAddress}
               aria-label={t.emailAddress}
               autoFocus
-              error={formState?.fieldErrors?.email}
+              error={formState?.validationErrors?.email}
             />
             <AuthInput
               name="name"
@@ -108,7 +111,7 @@ export function SignUpForm({ passwordMinLength, t }: Props) {
               required
               placeholder={t.name}
               aria-label={t.name}
-              error={formState?.fieldErrors?.name}
+              error={formState?.validationErrors?.name}
             />
             <AuthInput
               name="password"
@@ -117,7 +120,7 @@ export function SignUpForm({ passwordMinLength, t }: Props) {
               minLength={passwordMinLength}
               placeholder={t.password}
               aria-label={t.password}
-              error={formState?.fieldErrors?.password}
+              error={formState?.validationErrors?.password}
             />
             <AuthInput
               name="confirmPassword"
@@ -125,12 +128,10 @@ export function SignUpForm({ passwordMinLength, t }: Props) {
               required
               placeholder={t.repeatPassword}
               aria-label={t.repeatPassword}
-              error={formState?.fieldErrors?.confirmPassword}
+              error={formState?.validationErrors?.confirmPassword}
             />
 
-            {formState?.formError && (
-              <FormError>{formState.formError}</FormError>
-            )}
+            {formState?.error && <FormError>{formState.error}</FormError>}
 
             <SubmitButton>{t.createAccount}</SubmitButton>
 
