@@ -1,16 +1,11 @@
 .container {
   display: inline-block;
   position: relative;
-  height: 8.75rem;
-  width: 15rem;
+  height: var(--trending-show-thumb-h);
+  width: var(--trending-show-thumb-w);
   border-radius: 10px;
   flex-shrink: 0;
   cursor: pointer;
-
-  @include tablet() {
-    height: 14.375rem;
-    width: 29.375rem;
-  }
 }
 
 .image {

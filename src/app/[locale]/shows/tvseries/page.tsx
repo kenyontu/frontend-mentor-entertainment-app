@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
+import { Suspense } from 'react'
 
-import { getShows } from '~/actions/shows'
 import { SearchInput } from '~/components/SearchInput'
 import { ShowListPageMain } from '~/components/layout/ShowListPageMain'
-import { ShowGrid } from '~/components/shows/ShowGrid'
-import { ShowItem } from '~/components/shows/item/ShowItem'
+import { LoadingShowGrid, ShowGrid } from '~/components/shows/ShowGrid'
+import { fetchShows } from '~/lib/db/data'
 import { getSingleQueryValue } from '~/lib/utils'
 import { LocaleParam } from '~/navigation'
 
@@ -26,8 +26,6 @@ export default async function TVSeriesPage({
   const searchInputParam: SearchParam = 's'
   const searchTerm = getSingleQueryValue(searchParams[searchInputParam])
 
-  const shows = await getShows({ searchTerm, category: 'tv-series' })
-
   return (
     <ShowListPageMain>
       <SearchInput
@@ -37,15 +35,9 @@ export default async function TVSeriesPage({
         }}
       />
 
-      <ShowGrid
-        title={
-          searchTerm
-            ? t('searchResults', { count: shows.length ?? 0, searchTerm })
-            : t('titleTvSeries')
-        }
-        shows={shows || []}
-        renderItem={(show) => <ShowItem key={show.id} show={show} />}
-      />
+      <Suspense fallback={<LoadingShowGrid title={t('titleTvSeries')} />}>
+        <TvSeries searchTerm={searchTerm} title={t('titleTvSeries')} />
+      </Suspense>
     </ShowListPageMain>
   )
 }
@@ -59,4 +51,20 @@ export async function generateMetadata({
     title: t('tvSeriesTitle'),
     description: t('homeDescription'),
   }
+}
+
+type TvSeriesProps = {
+  title: string
+  searchTerm?: string
+}
+
+async function TvSeries({ title, searchTerm }: TvSeriesProps) {
+  const res = await fetchShows({
+    category: 'tv-series',
+    searchTerm,
+  })
+
+  const shows = res.status === 'success' ? res.data : null
+
+  return <ShowGrid title={title} searchTerm={searchTerm} shows={shows} />
 }

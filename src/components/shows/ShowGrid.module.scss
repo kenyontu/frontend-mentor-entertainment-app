@@ -21,3 +21,16 @@
     gap: 2rem;
   }
 }
+
+.messageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.error {
+  padding-top: 2rem;
+  text-align: center;
+  color: var(--clr-red-400);
+}

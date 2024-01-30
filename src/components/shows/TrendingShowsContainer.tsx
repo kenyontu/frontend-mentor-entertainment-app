@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 
-import styles from './TrendingShows.module.scss'
+import styles from './TrendingShowsContainer.module.scss'
 import { LeftIcon } from '../icons/LeftIcon'
 import { RightIcon } from '../icons/RightIcon'
 import { ShowSectionHeader } from './ShowSectionHeader'
@@ -13,7 +13,6 @@ type Props = {
   // When having translated text in client components, the recommended
   // approach is to pass them as props from a server component
   t: {
-    title: string
     srScrollLeft: string
     srScrollRight: string
   }
@@ -64,8 +63,6 @@ export function TrendingShowsContainer({ children, t }: Props) {
 
   return (
     <section className={styles.container}>
-      <ShowSectionHeader>{t.title}</ShowSectionHeader>
-
       <div className={styles.listWrapper}>
         <div className={styles.list} ref={listRef}>
           <div

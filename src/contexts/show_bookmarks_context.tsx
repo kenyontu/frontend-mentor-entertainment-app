@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { createContext, useContext } from 'react'
 import useSWR from 'swr'
 import { bookmarkShow, getBookmarks, unbookmarkShow } from '~/actions/bookmarks'
+import { ActionError } from '~/actions/types'
 import { Show } from '~/lib/db'
 
 type ContextState = {
@@ -22,12 +23,19 @@ export function ShowBookmarksProvider({ children }: Props) {
   const userId = session.data?.user.id
   const swrKey = ['show_bookmarks', userId] as const
 
-  const { data, mutate } = useSWR<Set<string>, any, typeof swrKey>(
+  const { data, error, mutate } = useSWR<Set<string>, any, typeof swrKey>(
     swrKey,
     async ([_, userId]) => {
       if (userId) {
-        const showIds = await getBookmarks(parseInt(userId))
-        return new Set(showIds)
+        const getBookmarksRes = await getBookmarks(parseInt(userId))
+        if (!getBookmarksRes.ok) {
+          const { error } = getBookmarksRes
+          if (error instanceof ActionError) {
+            throw error
+          }
+        }
+
+        return new Set(getBookmarksRes.showIds)
       }
 
       return new Set()

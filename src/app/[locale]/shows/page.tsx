@@ -1,11 +1,15 @@
 import { Metadata } from 'next'
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server'
-import { getShows, getTrendingShows } from '~/actions/shows'
+import { Suspense } from 'react'
 import { SearchInput } from '~/components/SearchInput'
 import { ShowListPageMain } from '~/components/layout/ShowListPageMain'
-import { ShowGrid } from '~/components/shows/ShowGrid'
-import { TrendingShows } from '~/components/shows/TrendingShows'
-import { ShowItem } from '~/components/shows/item/ShowItem'
+import { LoadingShowGrid, ShowGrid } from '~/components/shows/ShowGrid'
+import { ShowSectionHeader } from '~/components/shows/ShowSectionHeader'
+import {
+  LoadingTrendingShows,
+  TrendingShows,
+} from '~/components/shows/TrendingShows'
+import { fetchShows } from '~/lib/db/data'
 import { getSingleQueryValue } from '~/lib/utils'
 import { LocaleParam } from '~/navigation'
 
@@ -26,8 +30,7 @@ export default async function ShowsPage({
   const searchInputParam: SearchParam = 's'
   const searchTerm = getSingleQueryValue(searchParams[searchInputParam])
 
-  const trendingShows = await getTrendingShows()
-  const shows = await getShows({ searchTerm })
+  const showTrending = !searchTerm
 
   return (
     <ShowListPageMain>
@@ -38,17 +41,18 @@ export default async function ShowsPage({
         }}
       />
 
-      {!searchTerm && <TrendingShows shows={trendingShows} />}
+      {showTrending && (
+        <>
+          <ShowSectionHeader>{t('trending')}</ShowSectionHeader>
+          <Suspense fallback={<LoadingTrendingShows />}>
+            <TrendingShows />
+          </Suspense>
+        </>
+      )}
 
-      <ShowGrid
-        title={
-          searchTerm
-            ? t('searchResults', { count: shows.length ?? 0, searchTerm })
-            : t('title')
-        }
-        shows={shows || []}
-        renderItem={(show) => <ShowItem key={show.id} show={show} />}
-      />
+      <Suspense fallback={<LoadingShowGrid title={t('titleMovies')} />}>
+        <Shows searchTerm={searchTerm} title={t('title')} />
+      </Suspense>
     </ShowListPageMain>
   )
 }
@@ -62,4 +66,19 @@ export async function generateMetadata({
     title: t('homeTitle'),
     description: t('homeDescription'),
   }
+}
+
+type ShowsProps = {
+  title: string
+  searchTerm?: string
+}
+
+async function Shows({ title, searchTerm }: ShowsProps) {
+  const res = await fetchShows({
+    searchTerm,
+  })
+
+  const shows = res.status === 'success' ? res.data : null
+
+  return <ShowGrid title={title} searchTerm={searchTerm} shows={shows} />
 }

@@ -1,35 +1,71 @@
 'use server'
 
-import { db, User, Bookmark } from '~/lib/db'
+import { getServerSession } from 'next-auth'
+import { getTranslations } from 'next-intl/server'
+import { authOptions } from '~/app/api/auth/[...nextauth]/route'
+import { db, Bookmark, Show } from '~/lib/db'
 
-export async function getBookmarks(userId: User['id']) {
-  // TODO: Figure out how to use Kysely to return a single value containing an array of bookmarked show_ids so we don't have to do the map bellow
-  const res = await db
-    .selectFrom('bookmarks')
-    .where('user_id', '=', userId)
-    .select('show_id')
-    .execute()
+export const getBookmarks = async () => {
+  const tError = await getTranslations('Error')
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return {
+        status: 'error',
+        error: tError('signInToAccess'),
+      }
+    }
 
-  return res.map((row) => row.show_id)
+    const userId = parseInt(session.user.id)
+
+    // TODO: Figure out how to use Kysely to return a single value containing an array of bookmarked show_ids so we don't have to do the map bellow
+    const res = await db
+      .selectFrom('bookmarks')
+      .where('user_id', '=', userId)
+      .select('show_id')
+      .execute()
+
+    return { ok: true, showIds: res.map((row) => row.show_id) }
+  } catch (error) {
+    // TODO: Report error
+    return { ok: false, error: tError('unexpectedError') }
+  }
 }
 
-export async function bookmarkShow(
+export const bookmarkShow = async (
   userId: Bookmark['user_id'],
   showId: Bookmark['show_id']
-) {
-  await db
-    .insertInto('bookmarks')
-    .values({ user_id: userId, show_id: showId })
-    .execute()
+) => {
+  const tError = await getTranslations('Error')
+
+  try {
+    await db
+      .insertInto('bookmarks')
+      .values({ user_id: userId, show_id: showId })
+      .execute()
+
+    return { ok: true }
+  } catch (error) {
+    // TODO: Report error
+    return { ok: false, error: tError('unexpectedError') }
+  }
 }
 
 export async function unbookmarkShow(
   userId: Bookmark['user_id'],
   showId: Bookmark['show_id']
 ) {
-  await db
-    .deleteFrom('bookmarks')
-    .where('user_id', '=', userId)
-    .where('show_id', '=', showId)
-    .execute()
+  const tError = await getTranslations('Error')
+  try {
+    await db
+      .deleteFrom('bookmarks')
+      .where('user_id', '=', userId)
+      .where('show_id', '=', showId)
+      .execute()
+
+    return { ok: true }
+  } catch (error) {
+    // TODO: Report error
+    return { ok: false, error: tError('unexpectedError') }
+  }
 }

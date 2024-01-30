@@ -1,9 +1,14 @@
 {
+  "Error": {
+    "signInToAccess": "You need to sign in to access this feature",
+    "unexpectedError": "An unexpected error occurred, please try again later"
+  },
   "Metadata": {
     "homeTitle": "Frontend Mentor | Entertainment web app",
     "homeDescription": "Watch Movies and TV series",
     "moviesTitle": "Movies",
     "tvSeriesTitle": "TV Series",
+    "bookmarksTitle": "Bookmarks",
     "signInTitle": "Sign In",
     "signUpTitle": "Sign Up"
   },
@@ -26,7 +31,11 @@
     "categoryTvSeries": "TV Series",
     "ratingE": "E",
     "ratingPg": "PG",
-    "rating18+": "18+"
+    "rating18+": "18+",
+    "loadingTrendingShows": "Loading trending shows...",
+    "unableToLoadTrendingShowsError": "Unable to load trending shows",
+    "loadingShows": "Loading shows...",
+    "unableToLoadShowsError": "Unable to load shows"
   },
   "SignIn": {
     "title": "Sign In",

@@ -22,8 +22,14 @@
   --outline: 2px solid var(--clr-white);
   --outline-offset: 3px;
 
+  --trending-show-thumb-w: 15rem;
+  --trending-show-thumb-h: 8.75rem;
+
   @include tablet() {
     --padding-page: 1.5rem;
+
+    --trending-show-thumb-w: 29.375rem;
+    --trending-show-thumb-h: 14.375rem;
   }
 
   @include desktop() {

@@ -1,104 +1,12 @@
-.container {
+.messageContainer {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--clr-dark-blue-400);
+  height: var(--trending-show-thumb-h);
+  border-radius: 10px;
 }
 
-.listWrapper {
-  --clr-bg: var(--clr-dark-blue-600);
-  --scroll-btn-size: 1.5rem;
-  position: relative;
-  display: flex;
-
-  @include desktop() {
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: var(--scroll-btn-size);
-      background: linear-gradient(90deg, var(--clr-bg), transparent);
-      z-index: 100;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      width: var(--scroll-btn-size);
-      background: linear-gradient(90deg, transparent, var(--clr-bg));
-      z-index: 100;
-    }
-  }
-}
-
-.scrollBtn {
-  display: none;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0.5rem;
-  cursor: pointer;
-  z-index: 110;
-  outline: none;
-  opacity: 0.9;
-  transition: opacity 150ms ease-in-out;
-
-  &.left {
-    left: 0;
-  }
-
-  &.right {
-    right: 0;
-  }
-
-  &.disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
-
-  @include desktop() {
-    display: block;
-  }
-}
-
-.scrollIcon {
-  width: var(--scroll-btn-size);
-  fill: var(--clr-white);
-}
-
-.list {
-  position: relative;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1rem;
-  overflow: auto;
-  padding: 0 var(--padding-page);
-  margin: 0 calc(var(--padding-page) * -1);
-
-  @include desktop() {
-    padding: 0;
-    margin: 0;
-    overflow-x: hidden;
-  }
-
-  .dummy {
-    display: none;
-    width: 1px;
-    height: 1px;
-
-    &.left {
-      margin-right: var(--scroll-btn-size);
-    }
-
-    &.right {
-      margin-left: var(--scroll-btn-size);
-    }
-
-    @include desktop() {
-      display: block;
-    }
-  }
+.error {
+  color: var(--clr-red-400);
 }
