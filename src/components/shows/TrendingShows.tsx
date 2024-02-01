@@ -3,9 +3,10 @@ import { TrendingShowsContainer } from './TrendingShowsContainer'
 import { useTranslations } from 'next-intl'
 import styles from './TrendingShows.module.scss'
 import { fetchTrendingShows } from '~/lib/db/data'
+import { getTranslations } from 'next-intl/server'
 
 export async function TrendingShows() {
-  const t = useTranslations('Shows')
+  const t = await getTranslations('Shows')
   const res = await fetchTrendingShows()
 
   if (res.status === 'error') {

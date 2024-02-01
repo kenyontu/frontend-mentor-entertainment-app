@@ -3,6 +3,7 @@ import { ShowItem } from './item/ShowItem'
 import { useTranslations } from 'next-intl'
 import { ShowSectionHeader } from './ShowSectionHeader'
 import { Show } from '~/lib/db'
+import { getTranslations } from 'next-intl/server'
 
 type Props = {
   title: string
@@ -11,7 +12,7 @@ type Props = {
 }
 
 export async function ShowGrid({ title, searchTerm, shows }: Props) {
-  const t = useTranslations('Shows')
+  const t = await getTranslations('Shows')
 
   return (
     <section className={styles.container}>
