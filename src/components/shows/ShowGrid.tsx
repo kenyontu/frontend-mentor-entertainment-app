@@ -7,16 +7,17 @@ import { getTranslations } from 'next-intl/server'
 
 type Props = {
   title: string
+  emptyMsg?: string
   searchTerm?: string
   shows: Show[] | null
 }
 
-export async function ShowGrid({ title, searchTerm, shows }: Props) {
+export async function ShowGrid({ title, searchTerm, shows, emptyMsg }: Props) {
   const t = await getTranslations('Shows')
 
   return (
     <section className={styles.container}>
-      {shows !== null ? (
+      {Array.isArray(shows) ? (
         <>
           <ShowSectionHeader>
             {searchTerm
@@ -27,16 +28,20 @@ export async function ShowGrid({ title, searchTerm, shows }: Props) {
               : title}
           </ShowSectionHeader>
 
-          <div className={styles.grid}>
-            {shows.map((show) => (
-              <ShowItem key={show.id} show={show} />
-            ))}
-          </div>
+          {shows.length > 0 ? (
+            <div className={styles.grid}>
+              {shows.map((show) => (
+                <ShowItem key={show.id} show={show} />
+              ))}
+            </div>
+          ) : (
+            <p>{emptyMsg}</p>
+          )}
         </>
       ) : (
         <>
           <ShowSectionHeader>{title}</ShowSectionHeader>
-          <p className={styles.error}>{t('loadingShows')}</p>
+          <p className={styles.error}>{t('unableToLoadShowsError')}</p>
         </>
       )}
     </section>

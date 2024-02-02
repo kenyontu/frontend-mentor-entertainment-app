@@ -50,6 +50,7 @@ export default async function BookmarksPage({
           userId={userId}
           searchTerm={searchTerm}
           title={t('titleBookmarks')}
+          emptyMsg={t('noBookmarks')}
         />
       </Suspense>
     </ShowListPageMain>
@@ -71,11 +72,13 @@ type BookmarkedShowsProps = {
   title: string
   searchTerm?: string
   userId: User['id']
+  emptyMsg: string
 }
 
 async function BookmarkedShows({
   title,
   searchTerm,
+  emptyMsg,
   userId,
 }: BookmarkedShowsProps) {
   const res = await fetchBookmarkedShows({
@@ -85,5 +88,12 @@ async function BookmarkedShows({
 
   const shows = res.status === 'success' ? res.data : null
 
-  return <ShowGrid title={title} searchTerm={searchTerm} shows={shows} />
+  return (
+    <ShowGrid
+      title={title}
+      searchTerm={searchTerm}
+      shows={shows}
+      emptyMsg={emptyMsg}
+    />
+  )
 }

@@ -32,6 +32,7 @@
     "ratingE": "E",
     "ratingPg": "PG",
     "rating18+": "18+",
+    "noBookmarks": "You currently have no bookmarks, bookmark shows to see them here.",
     "loadingTrendingShows": "Loading trending shows...",
     "unableToLoadTrendingShowsError": "Unable to load trending shows",
     "loadingShows": "Loading shows...",
