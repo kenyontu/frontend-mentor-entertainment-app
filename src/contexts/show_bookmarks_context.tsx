@@ -1,10 +1,10 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useLocale } from 'next-intl'
 import { createContext, useContext } from 'react'
 import useSWR from 'swr'
-import { bookmarkShow, getBookmarks, unbookmarkShow } from '~/actions/bookmarks'
-import { ActionError } from '~/actions/types'
+import { bookmarkShow, unbookmarkShow } from '~/actions/bookmarks'
 import { Show } from '~/lib/db'
 
 type ContextState = {
@@ -14,31 +14,23 @@ type ContextState = {
 
 const ShowBookmarksContext = createContext<ContextState | null>(null)
 
+function fetchBookmarkIds(url: string) {}
+
 type Props = {
   children: React.ReactNode
 }
 
 export function ShowBookmarksProvider({ children }: Props) {
+  const locale = useLocale()
   const session = useSession()
   const userId = session.data?.user.id
-  const swrKey = ['show_bookmarks', userId] as const
 
-  const { data, error, mutate } = useSWR<Set<string>, any, typeof swrKey>(
-    swrKey,
-    async ([_, userId]) => {
-      if (userId) {
-        const getBookmarksRes = await getBookmarks(parseInt(userId))
-        if (!getBookmarksRes.ok) {
-          const { error } = getBookmarksRes
-          if (error instanceof ActionError) {
-            throw error
-          }
-        }
-
-        return new Set(getBookmarksRes.showIds)
-      }
-
-      return new Set()
+  const { data, error, mutate } = useSWR<Set<string>, any, string>(
+    '/api/shows/bookmarks',
+    (url) => {
+      return fetch(url)
+        .then((res) => res.json())
+        .then((json) => new Set(json.show_ids))
     }
   )
 
@@ -58,7 +50,12 @@ export function ShowBookmarksProvider({ children }: Props) {
       }
       mutate(
         async (bookmarks) => {
-          await unbookmarkShow(parseInt(userId), showId)
+          const formData = new FormData()
+          formData.append('userId', userId)
+          formData.append('showId', showId)
+          formData.append('pathToRevalidate', `/${locale}/shows/bookmarks`)
+
+          await unbookmarkShow(formData)
           return getUpdatedData(bookmarks)
         },
         {
@@ -75,7 +72,12 @@ export function ShowBookmarksProvider({ children }: Props) {
       }
       mutate(
         async (bookmarks) => {
-          await bookmarkShow(parseInt(userId), showId)
+          const formData = new FormData()
+          formData.append('userId', userId)
+          formData.append('showId', showId)
+          formData.append('pathToRevalidate', `/${locale}/shows/bookmarks`)
+
+          await bookmarkShow(formData)
           return getUpdatedData(bookmarks)
         },
         {

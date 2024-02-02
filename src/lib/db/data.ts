@@ -111,3 +111,20 @@ export async function fetchUserByEmail(
     return { status: 'error' }
   }
 }
+
+export async function fetchBookmarkIds(
+  userId: User['id']
+): Promise<FetchRes<Show['id'][]>> {
+  try {
+    const res = await db
+      .selectFrom('bookmarks')
+      .where('user_id', '=', userId)
+      .select('show_id')
+      .execute()
+
+    return { status: 'success', data: res.map((row) => row.show_id) }
+  } catch (error) {
+    // TODO: Report error
+    return { status: 'error' }
+  }
+}
