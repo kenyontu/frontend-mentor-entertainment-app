@@ -50,24 +50,44 @@ npm install
 Create a `.env` file in the root of the poject directory and add the following variables:
 
 ```
-DATABASE_URL="<PostgreSQL connection URL>"
 NEXTAUTH_URL="<Website url>"
 NEXTAUTH_SECRET="<Secret value for next-auth>"
+PGHOST=<postgres host>
+PGUSER=<postgres user>
+PGDATABASE=<postgres database>
+PGPASSWORD=<postgres password>
+PSPORT=<postgres port>
 ```
 
-Sync the database with the Prisma schema:
+Example `.env` file:
 
 ```
-npm run prisma:push
+NEXTAUTH_URL="localhost:3000"
+NEXTAUTH_SECRET="apDXOcvgjU6RB9ZVA0dhGxnEEg6iotMwHSBl2kfWgBk="
+PGHOST=localhost
+PGUSER=user
+PGDATABASE=entertainment_app
+PGPASSWORD=mypassword
+PGPORT=5432
 ```
 
-Seed the database with the seed data:
+#### Apply database migrations
+
+**Note**: I've also provided SQL scripts if the migration does not work
+
+Create a new postgres database and make sure you have an user with the necessary roles.
+
+Open the `db/migrate.ts` file and enter the database, user and password in the object passed to the `Pool` contructor
+
+Then in a terminal, run:
 
 ```
-npm run prisma:seed
+npx tsx db/migrate.ts
 ```
 
-Start the app in dev mode:
+### Runing in dev mode
+
+In a terminal, run:
 
 ```
 npm run dev
@@ -84,6 +104,6 @@ npm run dev
 - [Sass](https://sass-lang.com/) - CSS preprocessor
 - [React](https://reactjs.org/) - JS library
 - [Typescript](https://www.typescriptlang.org/) - JavaScript with syntax for types
-- [Next.js](https://nextjs.org/) - React framework
-- [Prisma](https://www.prisma.io/) - Database ORM
+- [Next.js 14](https://nextjs.org/) - React framework
+- [Kysely](https://kysely.dev/) - SQL query builder
 - [PostgreSQL](https://www.postgresql.org/) - Relational database
