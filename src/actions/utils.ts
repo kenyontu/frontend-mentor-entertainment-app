@@ -2,6 +2,7 @@ import { Session, getServerSession } from 'next-auth'
 import { z } from 'zod'
 import { toSingleErrorByField } from '~/lib/zodUtils'
 import { getTranslationsSafely } from '~/i18n'
+import { authOptions } from '~/app/api/auth/[...nextauth]/route'
 
 type ServerActOptions = {}
 
@@ -41,6 +42,7 @@ export function formDataToObj(formData: FormData) {
   return obj
 }
 
+// TODO: Think about a simpler abstraction
 /**
  * Creates server action functions.
  *
@@ -50,7 +52,7 @@ export function formDataToObj(formData: FormData) {
  */
 export function createServerAct<
   Z extends z.ZodTypeAny,
-  R extends { status: 'success' }
+  R extends { status: 'success' },
 >(
   /**
    * A function which returns the Zod schema used to validate the [FormData] Object
@@ -68,7 +70,7 @@ export function createServerAct<
   return (act: (options: ActOptions<Input>) => Promise<R | ActError>) => {
     return async (formData: FormData) => {
       try {
-        const session = await getServerSession()
+        const session = await getServerSession(authOptions)
 
         const inputSchema = await getInputSchema()
         const valResult = inputSchema.safeParse(formDataToObj(formData))
@@ -88,7 +90,6 @@ export function createServerAct<
         return act({ session, data, error })
       } catch (error) {
         // TODO: Report error
-
         let tError = await getTranslationsSafely('Error')
         return {
           status: 'error',
@@ -103,5 +104,5 @@ export function createServerAct<
  * Extracts the error type of a server action function created from [createServerAct]
  */
 export type ExtractError<
-  F extends Awaited<ReturnType<ReturnType<typeof createServerAct>>>
+  F extends Awaited<ReturnType<ReturnType<typeof createServerAct>>>,
 > = Extract<Awaited<ReturnType<F>>, { status: 'error' }>

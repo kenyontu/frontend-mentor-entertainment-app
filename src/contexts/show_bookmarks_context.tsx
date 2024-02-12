@@ -14,8 +14,6 @@ type ContextState = {
 
 const ShowBookmarksContext = createContext<ContextState | null>(null)
 
-function fetchBookmarkIds(url: string) {}
-
 type Props = {
   children: React.ReactNode
 }
@@ -51,7 +49,6 @@ export function ShowBookmarksProvider({ children }: Props) {
       mutate(
         async (bookmarks) => {
           const formData = new FormData()
-          formData.append('userId', userId)
           formData.append('showId', showId)
           formData.append('pathToRevalidate', `/${locale}/shows/bookmarks`)
 
@@ -73,7 +70,6 @@ export function ShowBookmarksProvider({ children }: Props) {
       mutate(
         async (bookmarks) => {
           const formData = new FormData()
-          formData.append('userId', userId)
           formData.append('showId', showId)
           formData.append('pathToRevalidate', `/${locale}/shows/bookmarks`)
 
