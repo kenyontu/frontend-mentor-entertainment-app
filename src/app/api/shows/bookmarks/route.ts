@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { bookmarksTable, db } from '~/lib/db'
-import { authOptions } from '../../auth/[...nextauth]/route'
+import { authOptions } from '../../auth/[...nextauth]/options'
 import { eq } from 'drizzle-orm'
 
 export async function GET(req: Request) {

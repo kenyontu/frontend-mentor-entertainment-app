@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 
-import { authOptions } from '~/app/api/auth/[...nextauth]/route'
+import { authOptions } from '~/app/api/auth/[...nextauth]/options'
 import { SearchInput } from '~/components/SearchInput'
 import { ShowListPageMain } from '~/components/layout/ShowListPageMain'
 import { LoadingShowGrid, ShowGrid } from '~/components/shows/ShowGrid'

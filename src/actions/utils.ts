@@ -2,7 +2,7 @@ import { Session, getServerSession } from 'next-auth'
 import { z } from 'zod'
 import { toSingleErrorByField } from '~/lib/zodUtils'
 import { getTranslationsSafely } from '~/i18n'
-import { authOptions } from '~/app/api/auth/[...nextauth]/route'
+import { authOptions } from '~/app/api/auth/[...nextauth]/options'
 
 type ServerActOptions = {}
 

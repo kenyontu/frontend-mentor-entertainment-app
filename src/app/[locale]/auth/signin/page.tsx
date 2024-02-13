@@ -1,6 +1,6 @@
 import { SignInForm } from './SignInForm'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '~/app/api/auth/[...nextauth]/route'
+import { authOptions } from '~/app/api/auth/[...nextauth]/options'
 import { LocaleParam, redirect } from '~/navigation'
 import { RedirectType } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
