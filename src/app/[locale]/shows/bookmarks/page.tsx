@@ -41,7 +41,7 @@ export default async function BookmarksPage({
       <SearchInput
         searchParamName={searchInputParam}
         inputProps={{
-          placeholder: t('searchMoviesPlaceholder'),
+          placeholder: t('searchBookmarksPlaceholder'),
         }}
       />
 
