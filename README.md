@@ -1,7 +1,5 @@
 # Frontend Mentor - Entertainment web app solution
 
-**Notice**: Migration to Next.js 14 in progress, the website is currently broken as I am removing `Prisma` in favor of `Kysely`.
-
 This is a solution to the [Entertainment web app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/entertainment-web-app-J-UhgAW1X). Frontend Mentor challenges help you improve your coding skills by building realistic project.
 
 ## Table of contents
@@ -52,11 +50,8 @@ Create a `.env` file in the root of the poject directory and add the following v
 ```
 NEXTAUTH_URL="<Website url>"
 NEXTAUTH_SECRET="<Secret value for next-auth>"
-PGHOST=<postgres host>
-PGUSER=<postgres user>
-PGDATABASE=<postgres database>
-PGPASSWORD=<postgres password>
-PSPORT=<postgres port>
+TURSO_DATABASE_URL="<Turso database url>"
+TURSO_AUTH_TOKEN="<turso database auth token>"
 ```
 
 Example `.env` file:
@@ -64,25 +59,17 @@ Example `.env` file:
 ```
 NEXTAUTH_URL="localhost:3000"
 NEXTAUTH_SECRET="apDXOcvgjU6RB9ZVA0dhGxnEEg6iotMwHSBl2kfWgBk="
-PGHOST=localhost
-PGUSER=user
-PGDATABASE=entertainment_app
-PGPASSWORD=mypassword
-PGPORT=5432
+TURSO_DATABASE_URL="libsql://example.turso.io"
+TURSO_AUTH_TOKEN="abcde"
 ```
 
 #### Apply database migrations
 
-**Note**: I've also provided SQL scripts if the migration does not work
-
-Create a new postgres database and make sure you have an user with the necessary roles.
-
-Open the `db/migrate.ts` file and enter the database, user and password in the object passed to the `Pool` contructor
-
-Then in a terminal, run:
+In a terminal, run:
 
 ```
-npx tsx db/migrate.ts
+drizzle-kit generate:sqlite
+drizzle-kit push:sqlite
 ```
 
 ### Runing in dev mode
@@ -105,5 +92,7 @@ npm run dev
 - [React](https://reactjs.org/) - JS library
 - [Typescript](https://www.typescriptlang.org/) - JavaScript with syntax for types
 - [Next.js 14](https://nextjs.org/) - React framework
-- [Kysely](https://kysely.dev/) - SQL query builder
-- [PostgreSQL](https://www.postgresql.org/) - Relational database
+- [NextAuth.js](https://next-auth.js.org/) - Authentication library
+- [next-intl](https://next-intl-docs.vercel.app/) - Internationalization library
+- [Drizzle](https://orm.drizzle.team/) - Database ORM
+- [Turso](https://turso.tech/) - libSQL database
