@@ -3,7 +3,6 @@ import { RedirectType } from 'next/navigation'
 import { LocaleParam, redirect } from '~/navigation'
 
 type Props = {
-  children: React.ReactNode
   params: LocaleParam
 }
 
