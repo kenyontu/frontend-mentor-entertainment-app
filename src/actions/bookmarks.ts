@@ -1,10 +1,11 @@
 'use server'
 
-import { db } from '~/lib/db'
+import { bookmarksTable, db } from '~/lib/db'
 import { createServerAct } from './utils'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { getTranslations } from 'next-intl/server'
+import { and, eq } from 'drizzle-orm'
 
 export const bookmarkShow = createServerAct(async () => {
   return z.object({
@@ -25,10 +26,7 @@ export const bookmarkShow = createServerAct(async () => {
     const userId = session.user.id
 
     const { showId, pathToRevalidate } = data
-    await db
-      .insertInto('bookmarks')
-      .values({ user_id: parseInt(userId), show_id: showId })
-      .execute()
+    await db.insert(bookmarksTable).values({ userId: parseInt(userId), showId })
 
     revalidatePath(pathToRevalidate)
     return { status: 'success' }
@@ -58,10 +56,13 @@ export const unbookmarkShow = createServerAct(async () => {
 
     const { showId, pathToRevalidate } = data
     await db
-      .deleteFrom('bookmarks')
-      .where('user_id', '=', parseInt(userId))
-      .where('show_id', '=', showId)
-      .execute()
+      .delete(bookmarksTable)
+      .where(
+        and(
+          eq(bookmarksTable.userId, parseInt(userId)),
+          eq(bookmarksTable.showId, showId)
+        )
+      )
 
     revalidatePath(pathToRevalidate)
     return { status: 'success' }

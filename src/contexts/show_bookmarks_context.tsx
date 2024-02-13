@@ -26,6 +26,10 @@ export function ShowBookmarksProvider({ children }: Props) {
   const { data, error, mutate } = useSWR<Set<string>, any, string>(
     '/api/shows/bookmarks',
     (url) => {
+      if (session.status !== 'authenticated') {
+        return new Set()
+      }
+
       return fetch(url)
         .then((res) => res.json())
         .then((json) => new Set(json.show_ids))

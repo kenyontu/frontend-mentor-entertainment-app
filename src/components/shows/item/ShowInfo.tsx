@@ -5,12 +5,12 @@ import { Typography } from '~/components/Typography'
 import { Show } from '~/lib/db'
 import { useTranslations } from 'next-intl'
 
-const translationKeyByCategory: Record<Show['category_id'], string> = {
+const translationKeyByCategory: Record<Show['categoryId'], string> = {
   movie: 'categoryMovie',
   'tv-series': 'categoryTvSeries',
 }
 
-const translationKeyByRating: Record<Show['rating_id'], string> = {
+const translationKeyByRating: Record<Show['ratingId'], string> = {
   e: 'ratingE',
   pg: 'ratingPg',
   '18+': 'rating18+',
@@ -24,8 +24,8 @@ type Props = {
 export function ShowInfo({ show, className }: Props) {
   const t = useTranslations('Shows')
 
-  const category = t(translationKeyByCategory[show.category_id])
-  const rating = t(translationKeyByRating[show.rating_id])
+  const category = t(translationKeyByCategory[show.categoryId])
+  const rating = t(translationKeyByRating[show.ratingId])
 
   const divider = <span className={styles.divider}>•</span>
 
@@ -34,7 +34,7 @@ export function ShowInfo({ show, className }: Props) {
       <Typography as="p" variant="body1" className={styles.info}>
         {show.year}
         {divider}
-        {show.category_id === 'movie' ? (
+        {show.categoryId === 'movie' ? (
           <Image
             src="/assets/icon-category-movie.svg"
             width={12}
@@ -43,7 +43,7 @@ export function ShowInfo({ show, className }: Props) {
             className={styles.categoryIcon}
             aria-hidden
           />
-        ) : show.category_id === 'tv-series' ? (
+        ) : show.categoryId === 'tv-series' ? (
           <Image
             src="/assets/icon-category-tv.svg"
             width={12}

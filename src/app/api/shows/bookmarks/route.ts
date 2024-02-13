@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth'
-import { db } from '~/lib/db'
+import { bookmarksTable, db } from '~/lib/db'
 import { authOptions } from '../../auth/[...nextauth]/route'
+import { eq } from 'drizzle-orm'
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions)
@@ -10,13 +11,12 @@ export async function GET(req: Request) {
 
   const userId = parseInt(session.user.id)
 
-  const res = await db
-    .selectFrom('bookmarks')
-    .where('user_id', '=', userId)
-    .select('show_id')
-    .execute()
+  const bookmarks = await db
+    .select({ showId: bookmarksTable.showId })
+    .from(bookmarksTable)
+    .where(eq(bookmarksTable.userId, userId))
 
-  const show_ids = res.map((show) => show.show_id)
+  const show_ids = bookmarks.map((b) => b.showId)
 
   return new Response(JSON.stringify({ show_ids }), {
     status: 200,

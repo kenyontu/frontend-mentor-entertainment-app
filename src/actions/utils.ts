@@ -58,7 +58,7 @@ export function createServerAct<
    * A function which returns the Zod schema used to validate the [FormData] Object
    * received by the server action
    *
-   * Having the schema being created in a separate async function allows the user
+o  * Having the schema being created in a separate async function allows the user
    * to translate error messages with [next-intl], while still being able to infer
    * the input type from the Zod schema
    */

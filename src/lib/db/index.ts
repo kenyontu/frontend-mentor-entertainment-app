@@ -1,9 +1,6 @@
-import { Pool } from 'pg'
-import { Kysely, PostgresDialect } from 'kysely'
+import { drizzle } from 'drizzle-orm/libsql'
+import { createClient } from '@libsql/client'
 
-import { Database } from './types'
-
-export { DatabaseError } from 'pg'
 export * from './types'
 
 export const DbErrorCodes = {
@@ -14,10 +11,8 @@ export const DbConstraints = {
   userEmailUnique: 'users_email_key',
 }
 
-const dialect = new PostgresDialect({
-  pool: new Pool(),
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
 })
-
-export const db = new Kysely<Database>({
-  dialect,
-})
+export const db = drizzle(client)

@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import { getTranslations } from 'next-intl/server'
 import { z } from 'zod'
 
-import { DatabaseError, db, DbConstraints, DbErrorCodes } from '~/lib/db'
+import { db, usersTable } from '~/lib/db'
 import { createServerAct } from './utils'
 import { getTranslationsSafely } from '~/i18n'
 
@@ -35,17 +35,17 @@ export const createUser = createServerAct(async () => {
     const encryptedPassword = await hashPassword(password)
 
     const res = await db
-      .insertInto('users')
+      .insert(usersTable)
       .values({
         name,
         email,
         password: encryptedPassword,
       })
-      .returning(['id'])
-      .executeTakeFirstOrThrow()
+      .returning({ id: usersTable.id })
 
-    return { status: 'success', userId: res.id }
+    return { status: 'success', userId: res[0].id }
   } catch (error) {
+    /*
     if (error instanceof DatabaseError) {
       if (
         error.code === DbErrorCodes.uniqueViolation &&
@@ -62,6 +62,7 @@ export const createUser = createServerAct(async () => {
         }
       }
     }
+    */
 
     let tError = await getTranslationsSafely('Error')
 

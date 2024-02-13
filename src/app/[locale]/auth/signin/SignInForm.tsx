@@ -42,10 +42,10 @@ export function SignInForm({ t }: Props) {
 
     if (res?.ok) {
       router.replace('/')
-    } else if (res?.error) {
-      setAuthError(t.requestError)
-    } else {
+    } else if (res?.status === 401) {
       setAuthError(t.invalidEmailPassword)
+    } else {
+      setAuthError(t.requestError)
     }
   }
 
