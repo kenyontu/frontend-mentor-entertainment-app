@@ -2,9 +2,15 @@ import { useTranslations } from 'next-intl'
 import { SignUpForm } from './SignUpForm'
 import { LocaleParam } from '~/navigation'
 import { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
 
-export default function SignUpPage() {
+type Props = {
+  params: LocaleParam
+}
+
+export default function SignUpPage({ params: { locale } }: Props) {
+  unstable_setRequestLocale(locale)
+
   const t = useTranslations('SignUp')
 
   const passwordMinLength = 5
@@ -26,10 +32,6 @@ export default function SignUpPage() {
       }}
     />
   )
-}
-
-type Props = {
-  params: LocaleParam
 }
 
 export async function generateMetadata({

@@ -3,10 +3,15 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '~/app/api/auth/[...nextauth]/options'
 import { LocaleParam, redirect } from '~/navigation'
 import { RedirectType } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
 import { Metadata } from 'next'
 
-export default async function SignInPage() {
+type Props = {
+  params: LocaleParam
+}
+
+export default async function SignInPage({ params: { locale } }: Props) {
+  unstable_setRequestLocale(locale)
   const t = await getTranslations('SignIn')
   const session = await getServerSession(authOptions)
 
@@ -28,10 +33,6 @@ export default async function SignInPage() {
       }}
     />
   )
-}
-
-type Props = {
-  params: LocaleParam
 }
 
 export async function generateMetadata({
