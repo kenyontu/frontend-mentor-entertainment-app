@@ -112,23 +112,32 @@ export async function fetchBookmarkedShows({
       })
       .from(showsTable)
       .innerJoin(bookmarksTable, eq(showsTable.id, bookmarksTable.showId))
-      .where(eq(bookmarksTable.userId, userId))
       .$dynamic()
 
-    function withSearchTerm<T extends SQLiteSelect>(
+    const withConditions = <T extends SQLiteSelect>(
       qb: T,
       searchTerm: FetchBookmarkedShowsOptions['searchTerm']
-    ) {
+    ) => {
+      const conditions: SQL[] = [eq(bookmarksTable.userId, userId)]
+
       if (searchTerm) {
-        return qb.where(
+        conditions.push(
           like(showsTable.title, `%${searchTerm}%`).append(sql` collate nocase`)
         )
+      }
+
+      if (conditions.length > 1) {
+        return qb.where(and(...conditions))
+      }
+
+      if (conditions.length == 1) {
+        return qb.where(conditions[0])
       }
 
       return qb
     }
 
-    query = withSearchTerm(query, searchTerm)
+    query = withConditions(query, searchTerm)
 
     const shows = await query
 
