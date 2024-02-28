@@ -1,17 +1,16 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import Head from 'next/head'
+import { useFormState, useFormStatus } from 'react-dom'
 import Image from 'next/image'
 
 import styles from '~/styles/Auth.module.scss'
-import { AuthInput } from '~/components/auth/AuthInput'
-import { Button } from '~/components/Button'
-import { Card } from '~/components/Card'
-import { Typography } from '~/components/Typography'
+import { AuthInput } from '~/ui/AuthInput'
+import { Button } from '~/ui/Button'
+import { Card } from '~/ui/Card'
+import { Typography } from '~/ui/Typography'
 import { createUser } from '~/actions/users'
 import { Link, useRouter } from '~/navigation'
-import { useFormState, useFormStatus } from 'react-dom'
 import { ExtractError } from '~/actions/utils'
 
 type Props = {
@@ -74,74 +73,68 @@ export function SignUpForm({ passwordMinLength, t }: Props) {
   )
 
   return (
-    <>
-      <Head>
-        <title>Sign Up</title>
-      </Head>
+    <main className={styles.main}>
+      <div className={styles.logoWrapper}>
+        <Image
+          src="/assets/logo.svg"
+          className={styles.logo}
+          alt=""
+          fill
+          aria-hidden="true"
+        />
+      </div>
 
-      <main className={styles.main}>
-        <div className={styles.logoWrapper}>
-          <Image
-            src="/assets/logo.svg"
-            className={styles.logo}
-            alt=""
-            fill
-            aria-hidden="true"
+      <Card className={styles.card}>
+        <Typography as="h1" variant="h1" className={styles.title}>
+          {t.title}
+        </Typography>
+
+        <form className={styles.form} action={formAction}>
+          <AuthInput
+            name="email"
+            type="email"
+            required
+            placeholder={t.emailAddress}
+            aria-label={t.emailAddress}
+            autoFocus
+            error={formState?.validationErrors?.email}
           />
-        </div>
+          <AuthInput
+            name="name"
+            type="text"
+            required
+            placeholder={t.name}
+            aria-label={t.name}
+            error={formState?.validationErrors?.name}
+          />
+          <AuthInput
+            name="password"
+            type="password"
+            required
+            minLength={passwordMinLength}
+            placeholder={t.password}
+            aria-label={t.password}
+            error={formState?.validationErrors?.password}
+          />
+          <AuthInput
+            name="confirmPassword"
+            type="password"
+            required
+            placeholder={t.repeatPassword}
+            aria-label={t.repeatPassword}
+            error={formState?.validationErrors?.confirmPassword}
+          />
 
-        <Card className={styles.card}>
-          <Typography as="h1" variant="h1" className={styles.title}>
-            {t.title}
+          {formState?.error && <FormError>{formState.error}</FormError>}
+
+          <SubmitButton>{t.createAccount}</SubmitButton>
+
+          <Typography as="p" variant="body1" className={styles.bottomMsg}>
+            {t.alreadyHaveAccount} <Link href="/auth/signin">{t.signIn}</Link>
           </Typography>
-
-          <form className={styles.form} action={formAction}>
-            <AuthInput
-              name="email"
-              type="email"
-              required
-              placeholder={t.emailAddress}
-              aria-label={t.emailAddress}
-              autoFocus
-              error={formState?.validationErrors?.email}
-            />
-            <AuthInput
-              name="name"
-              type="text"
-              required
-              placeholder={t.name}
-              aria-label={t.name}
-              error={formState?.validationErrors?.name}
-            />
-            <AuthInput
-              name="password"
-              type="password"
-              required
-              minLength={passwordMinLength}
-              placeholder={t.password}
-              aria-label={t.password}
-              error={formState?.validationErrors?.password}
-            />
-            <AuthInput
-              name="confirmPassword"
-              type="password"
-              required
-              placeholder={t.repeatPassword}
-              aria-label={t.repeatPassword}
-              error={formState?.validationErrors?.confirmPassword}
-            />
-
-            {formState?.error && <FormError>{formState.error}</FormError>}
-
-            <SubmitButton>{t.createAccount}</SubmitButton>
-
-            <Typography as="p" variant="body1" className={styles.bottomMsg}>
-              {t.alreadyHaveAccount} <Link href="/auth/signin">{t.signIn}</Link>
-            </Typography>
-          </form>
-        </Card>
-      </main>
-    </>
+        </form>
+      </Card>
+    </main>
   )
 }
 

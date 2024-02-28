@@ -1,18 +1,17 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
-import Head from 'next/head'
-import Image from 'next/image'
 import { useState } from 'react'
-import { AuthInput } from '~/components/auth/AuthInput'
-import { Button } from '~/components/Button'
+import { useFormStatus } from 'react-dom'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 
 import styles from '~/styles/Auth.module.scss'
-import { Card } from '~/components/Card'
-import { Typography } from '~/components/Typography'
 import { Link } from '~/navigation'
-import { useRouter } from 'next/navigation'
-import { useFormStatus } from 'react-dom'
+import { Card } from '~/ui/Card'
+import { Typography } from '~/ui/Typography'
+import { AuthInput } from '~/ui/AuthInput'
+import { Button } from '~/ui/Button'
 
 type Props = {
   t: {
@@ -50,63 +49,53 @@ export function SignInForm({ t }: Props) {
   }
 
   return (
-    <div>
-      <Head>
-        <title>{t.title}</title>
-      </Head>
+    <main className={styles.main}>
+      <div className={styles.logoWrapper}>
+        <Image
+          src="/assets/logo.svg"
+          className={styles.logo}
+          alt=""
+          fill
+          aria-hidden
+        />
+      </div>
 
-      <main className={styles.main}>
-        <div className={styles.logoWrapper}>
-          <Image
-            src="/assets/logo.svg"
-            className={styles.logo}
-            alt=""
-            fill
-            aria-hidden
+      <Card className={styles.card}>
+        <Typography as="h1" variant="h1" className={styles.title}>
+          {t.title}
+        </Typography>
+
+        <form action={formAction} className={styles.form}>
+          <AuthInput
+            name="email"
+            type="email"
+            placeholder={t.emailAddress}
+            aria-label={t.emailAddress}
+            autoFocus
+            required
           />
-        </div>
+          <AuthInput
+            name="password"
+            type="password"
+            placeholder={t.password}
+            aria-label={t.password}
+            required
+          />
 
-        <Card className={styles.card}>
-          <Typography as="h1" variant="h1" className={styles.title}>
-            {t.title}
-          </Typography>
-
-          <form action={formAction} className={styles.form}>
-            <AuthInput
-              name="email"
-              type="email"
-              placeholder={t.emailAddress}
-              aria-label={t.emailAddress}
-              autoFocus
-              required
-            />
-            <AuthInput
-              name="password"
-              type="password"
-              placeholder={t.password}
-              aria-label={t.password}
-              required
-            />
-
-            {authError && (
-              <Typography
-                as="p"
-                variant="body1"
-                className={styles.errorMessage}
-              >
-                {authError}
-              </Typography>
-            )}
-
-            <SubmitButton>{t.login}</SubmitButton>
-
-            <Typography as="p" variant="body1" className={styles.bottomMsg}>
-              {t.dontHaveAccount} <Link href="/auth/signup">{t.signUp}</Link>
+          {authError && (
+            <Typography as="p" variant="body1" className={styles.errorMessage}>
+              {authError}
             </Typography>
-          </form>
-        </Card>
-      </main>
-    </div>
+          )}
+
+          <SubmitButton>{t.login}</SubmitButton>
+
+          <Typography as="p" variant="body1" className={styles.bottomMsg}>
+            {t.dontHaveAccount} <Link href="/auth/signup">{t.signUp}</Link>
+          </Typography>
+        </form>
+      </Card>
+    </main>
   )
 }
 

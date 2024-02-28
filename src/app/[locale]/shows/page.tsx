@@ -1,14 +1,15 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server'
-import { Suspense } from 'react'
-import { SearchInput } from '~/components/SearchInput'
-import { ShowListPageMain } from '~/components/layout/ShowListPageMain'
-import { LoadingShowGrid, ShowGrid } from '~/components/shows/ShowGrid'
-import { ShowSectionHeader } from '~/components/shows/ShowSectionHeader'
+
+import { SearchInput } from '~/ui/SearchInput'
+import { ShowListPageMain } from '~/ui/layout/ShowListPageMain'
+import { LoadingShowGrid, ShowGrid } from '~/ui/shows/ShowGrid'
+import { ShowSectionHeader } from '~/ui/shows/ShowSectionHeader'
 import {
   LoadingTrendingShows,
   TrendingShows,
-} from '~/components/shows/TrendingShows'
+} from '~/ui/shows/trending/TrendingShows'
 import { fetchShows } from '~/lib/db/data'
 import { getSingleQueryValue } from '~/lib/utils'
 import { LocaleParam } from '~/navigation'

@@ -1,8 +1,9 @@
-import { useTranslations } from 'next-intl'
-import { SignUpForm } from './SignUpForm'
-import { LocaleParam } from '~/navigation'
 import { Metadata } from 'next'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
+
+import { SignUpForm } from './SignUpForm'
+import { LocaleParam } from '~/navigation'
 
 type Props = {
   params: LocaleParam
